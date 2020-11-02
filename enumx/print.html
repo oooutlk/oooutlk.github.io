@@ -1,0 +1,1303 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="ad-hoc-enums.html"><strong aria-hidden="true">2.</strong> Ad-hoc enum types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="predefined.html"><strong aria-hidden="true">2.1.</strong> Predefined types</a></li><li class="chapter-item expanded "><a href="user-defined.html"><strong aria-hidden="true">2.2.</strong> User-defined types</a></li></ol></li><li class="chapter-item expanded "><a href="impl-traits-for-enums.html"><strong aria-hidden="true">3.</strong> impl traits for enums</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contextual-macros.html"><strong aria-hidden="true">3.1.</strong> Contextual macros</a></li><li class="chapter-item expanded "><a href="predefined-macros.html"><strong aria-hidden="true">3.2.</strong> Predefined macros</a></li></ol></li><li class="chapter-item expanded "><a href="sum.html"><strong aria-hidden="true">4.</strong> Sum impl Trait</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="enums-external-to-fn.html"><strong aria-hidden="true">4.1.</strong> Enums external to function</a></li><li class="chapter-item expanded "><a href="trait-annotation.html"><strong aria-hidden="true">4.2.</strong> Trait annotation</a></li><li class="chapter-item expanded "><a href="tagged-variant.html"><strong aria-hidden="true">4.3.</strong> The variant attribute</a></li><li class="chapter-item expanded "><a href="multiple-sum.html"><strong aria-hidden="true">4.4.</strong> Multiple sum tags</a></li><li class="chapter-item expanded "><a href="sum_err.html"><strong aria-hidden="true">4.5.</strong> Support of ?</a></li></ol></li><li class="chapter-item expanded "><a href="exchange.html"><strong aria-hidden="true">5.</strong> Enum exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="exchange-trait.html"><strong aria-hidden="true">5.1.</strong> The Exchange trait</a></li><li class="chapter-item expanded "><a href="typat.html"><strong aria-hidden="true">5.2.</strong> Type as Pattern</a></li></ol></li><li class="chapter-item expanded "><a href="cex.html"><strong aria-hidden="true">6.</strong> Checked exception</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="result-macro.html"><strong aria-hidden="true">6.1.</strong> Result!() macro</a></li><li class="chapter-item expanded "><a href="ret-throw-macros.html"><strong aria-hidden="true">6.2.</strong> The ret!()/throw!() macros</a></li><li class="chapter-item expanded "><a href="cex-backtrace.html"><strong aria-hidden="true">6.3.</strong> Backtrace</a></li><li class="chapter-item expanded "><a href="cex-typat.html"><strong aria-hidden="true">6.4.</strong> &quot;Type as Pattern&quot; makes sense for narrowing</a></li><li class="chapter-item expanded "><a href="cex-as-impl-trait.html"><strong aria-hidden="true">6.5.</strong> Fallback as impl Trait</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#introduction-to-enumx" id="introduction-to-enumx">Introduction to enumx</a></h1>
+<p>This project provides ENUM eXtensions to simulate the following features:</p>
+<ul>
+<li>
+<p>&quot;Union types&quot; in Racket, with the special interest in error-handling, aka
+checked exception.</p>
+</li>
+<li>
+<p>summaries into an enum, the returned values of different types by functions
+that return <code>impl Trait</code>.</p>
+</li>
+<li>
+<p>macros to help implementing traits for enums the variants of which have all
+implemented the traits.</p>
+</li>
+</ul>
+<p>Four crates categorized into the fowllowing sub projects:</p>
+<h2><a class="header" href="#enumx-the-enum-extension-library" id="enumx-the-enum-extension-library">EnumX, the enum extension library.</a></h2>
+<p>Type/trait definitions in <code>enumx</code> crate and proc macros in <code>enumx_derive</code> crate.</p>
+<h2><a class="header" href="#cex-for-checked-exception" id="cex-for-checked-exception">CeX, for Checked EXception.</a></h2>
+<p>Type/trait definitions in <code>cex</code> crate and proc macros in <code>cex_derive</code> crate.</p>
+<h1><a class="header" href="#ad-hoc-enum-types" id="ad-hoc-enum-types">Ad-hoc enum types</a></h1>
+<p>A Rust tuple could be considered as an ad-hoc struct for which the programmers
+do not need to name the type nor the fields. As an analogy, an ad-hoc enum is
+implicitly defined by its variants.</p>
+<p>Unfortunately Rust does not support ad-hoc enums. This library uses <code>Enum!()</code>
+macros for simulation. For instance, the definition of <code>Enum!(A,B,C)</code> is as
+follows:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Enum3&lt;A,B,C&gt; {
+    _0( A ),
+    _1( B ),
+    _2( C ),
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>Enum!()</code> macro denotes a series of generic enums named <code>Enum0</code>,
+<code>Enum1</code>, <code>Enum2</code>, .. which composed of 0,1,2.. variants. These enums should be
+defined beforehand, either predefined in this library, or defined by the library
+users.</p>
+<h1><a class="header" href="#predefined-ad-hoc-enums" id="predefined-ad-hoc-enums">Predefined ad-hoc enums</a></h1>
+<p>This library has defined <code>Enum0</code>, <code>Enum1</code> .. up to <code>Enum16</code> by default.</p>
+<p>The library user can <code>use enumx::predefined::*;</code> for convenience.</p>
+<p>A feature named &quot;enum32&quot; increases the set of predefined enums up to <code>Enum32</code>.</p>
+<p><code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies.enumx]
+version = &quot;0.4&quot;
+features = &quot;enum32&quot;
+</code></pre>
+<p>The predefined enums can be disabled by opting out &quot;Enum16&quot; and &quot;Enum32&quot; features.</p>
+<p><code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies.enumx]
+version = &quot;0.4&quot;
+default-features = false
+</code></pre>
+<h1><a class="header" href="#user-defined-ad-hoc-enums" id="user-defined-ad-hoc-enums">User defined ad-hoc enums</a></h1>
+<p>Sometimes the library users have to define these ad-hoc enums themselves to
+implement more traits which are not implemented for predefined enums in this
+library.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use enumx::export::*;
+
+def_impls! {
+    #[derive( SomeTraitNeverHeardByEnumxAuthor )]
+    enum Enum![ 0..=16 ];
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>Enum![ 0..=16 ]</code> means <code>Enum0</code>,<code>Enum1</code>,.. up to <code>Enum16</code>. The name <code>Enum</code> can
+be replaced by any valid identity. For instance, <code>MyEnum![ 1..=6 ]</code> means
+<code>MyEnum1</code>, <code>MyEnum2</code>, up to <code>MyEnum6</code>.</p>
+<p>Where clause is supported by <code>def_impls!{}</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    use enumx::export::*;
+
+    def_impls! {
+        pub enum Enum![ 0..=16 ]
+            where _Variants!(): Iterator&lt;Item=i32&gt;;
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#impl-traits-for-enums" id="impl-traits-for-enums">impl traits for enums</a></h1>
+<p>It is very common to implement traits for enums if all of its variants have
+implemented the traits.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Data {
+    Bin( Vec&lt;u8&gt; ),
+    Text( String ),
+}
+
+impl AsRef&lt;[u8]&gt; for Data {
+    fn as_ref( &amp;self ) -&gt; &amp;[u8] {
+        match self {
+            Data::Bin(  v ) =&gt; v.as_ref(),
+            Data::Text( v ) =&gt; v.as_ref(),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><a href="impl-traits-for-enums.html#generic-enum-example">In case of generic enums</a>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;T0,T1&gt; AsRef&lt;[u8]&gt; for Enum2&lt;T0,T1&gt;
+    where T0: AsRef&lt;[u8]&gt; 
+        , T1: AsRef&lt;[u8]&gt; 
+{
+    fn as_ref( &amp;self ) -&gt; &amp;[u8] {
+        match self {
+            Enum2::_0( s ) =&gt; s.as_ref(),
+            Enum2::_1( s ) =&gt; s.as_ref(),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The basic idea is to match the variants and delegate. This library provides
+macros to help to avoid writing these boilerplate code:</p>
+<ol>
+<li><a href="./contextual-macros.html">The contextual macros</a></li>
+</ol>
+<p>These macros helps not repeating the where clauses and match arms of each variant.</p>
+<ol start="2">
+<li><a href="./predefined-macros.html">The predefined macros</a></li>
+</ol>
+<p>These macros helps to omit the methods in impl blocks.</p>
+<h1><a class="header" href="#the-contextual-macros" id="the-contextual-macros">The contextual macros</a></h1>
+<p>This library introduces a proc macro <code>def_impls!{}</code> in which you can define an
+enum and write several impl blocks. In these impl blocks, the following macros
+are supported:</p>
+<ol>
+<li>
+<p><code>_Variants!()</code> in where clause.
+For example, <code>where _Variants!(): SomeTrait</code> means each variant has the trait
+bound of <code>: SomeTrait</code>.</p>
+</li>
+<li>
+<p><code>_match!()</code> in trait method.
+This macro will expand to a match expression that enumerate all variants, and
+translate the macros listed below.</p>
+</li>
+<li>
+<p><code>_variant!()</code> in <code>_match!()</code>.
+This macro will expand to the value of the matched variant.</p>
+</li>
+<li>
+<p><code>_Variant!()</code> in <code>_match!()</code>.
+This macro will expand to the type of the matched variant.</p>
+</li>
+<li>
+<p><code>_enum!()</code> in <code>_match!()</code>.
+This macro will wrap its inner value to get an enum. Use this macro if the trait method returns <code>Self</code>. </p>
+</li>
+</ol>
+<h2><a class="header" href="#examples" id="examples">Examples</a></h2>
+<p>Let's rewrite the <a href="./impl-traits-for-enums.html#generic-enum-example">generic enum example</a>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>def_impls! {
+    impl&lt;T0,T1&gt; AsRef&lt;[u8]&gt; for Enum2&lt;T0,T1&gt;
+        where _Variants!(): AsRef&lt;[u8]&gt; 
+    {
+        fn as_ref( &amp;self ) -&gt; &amp;[u8] {
+            _match!(
+                _variant!().as_ref()
+            )
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Another example, implementing Clone. Note the using of <code>_enum!()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>def_impls! {
+    impl&lt;T0,T1&gt; Clone for Enum2&lt;T0,T1&gt;
+        where _Variants!(): Clone
+    {
+        fn clone( &amp;self ) -&gt; Self {
+            _match!(
+                _enum!( _variant!().clone() )
+            )
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You can specify the expression <code>matched</code> being matched, using the syntax
+<code>_match!( matched =&gt; expr )</code>. If ommited, <code>_match!( expr )</code> is equivalent to
+<code>_match!( self =&gt; expr )</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>def_impls! {
+    impl&lt;T0, T1, R, Yield, Return&gt; std::ops::Generator&lt;R&gt; for Enum2&lt;T0,T1&gt;
+        where _Variants!(): std::ops::Generator&lt;R,Yield=Yield,Return=Return&gt;
+    {
+        type Yield = Yield;
+        type Return = Return;
+        fn resume( self: std::pin::Pin&lt;&amp;mut Self&gt;, arg: R )
+            -&gt; std::ops::GeneratorState&lt;Self::Yield, Self::Return&gt;
+        {
+            _match!( unsafe{ self.get_unchecked_mut() } =&gt;
+                 unsafe{ std::pin::Pin::new_unchecked( _variant!() )}
+                    .resume( arg )
+            )
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#the-predfined-macros" id="the-predfined-macros">The predfined macros</a></h1>
+<p>For frequently used traits in std, this library provides macros such as 
+<code>impl_trait!()</code> to implement these traits without the need of writing trait
+methods.</p>
+<h2><a class="header" href="#syntax-of-impl_trait" id="syntax-of-impl_trait">Syntax of <code>impl_trait!{}</code></a></h2>
+<p>The full form is</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait! {
+    _impl!( Generics ) Path::Of::Trait _for!( Type ) _where!( Clause )
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>Generics</code> and <code>Clause</code> are optional:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ _impl!() Path::Of::Trait _for!( Type ) _where!() }
+<span class="boring">}
+</span></code></pre></pre>
+<p>and the wrapped macros can be omitted:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ Path::Of::Trait _for!( Type )}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#supported-forms-of-types-in-_for" id="supported-forms-of-types-in-_for">Supported forms of types in <code>_for!()</code></a></h2>
+<p>The <code>_for!()</code> macro supports two forms of types.</p>
+<p>One is ad-hoc enums:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ Path::Of::Trait _for!( Enum![1..=16] )}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The other is the enum type definition copied in <code>_def!()</code> macro:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ Path::Of::Trait _for!( _def!(
+    enum Value {
+        Bin( Vec&lt;u8&gt; ),
+        Text( String ),
+    }
+))}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note: <code>_def!()</code> does not define any enum, so <code>Value</code> should have been defined elsewhere.</p>
+<h2><a class="header" href="#the-_where-macro" id="the-_where-macro">The <code>_where!()</code> macro</a></h2>
+<p>You can write any where clause in this macro.</p>
+<p>Note: you do not need write <code>_where!( _Variants!(): Path::Of::Trait )</code> which the
+<code>impl_trait!{}</code> macro will generate it silently.</p>
+<h2><a class="header" href="#traits-in-std-prelude" id="traits-in-std-prelude">Traits in std prelude</a></h2>
+<p><code>AsRef</code></p>
+<p><code>AsMut</code></p>
+<p><code>DoubleEndedIterator</code></p>
+<p><code>ExactSizeIterator</code></p>
+<p><code>Extend</code></p>
+<p><code>Fn</code></p>
+<p><code>Iterator</code></p>
+<p>The example of implementing <code>Iterator</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ Iterator _for!( Type )}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The example of implementing <code>Fn</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ _impl!(Args) Fn&lt;Args&gt; _for!( Type )}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#traits-with-full-path" id="traits-with-full-path">Traits with full path</a></h2>
+<p><code>std::error::Error</code></p>
+<p><code>std::fmt::Debug</code></p>
+<p><code>std::fmt::Display</code></p>
+<p><code>std::iter::FusedIterator</code></p>
+<p><code>std::iter::TrustedLen</code></p>
+<p><code>std::io::BufRead</code></p>
+<p><code>std::io::Read</code></p>
+<p><code>std::io::Seek</code></p>
+<p><code>std::io::Write</code></p>
+<p><code>std::ops::Deref</code></p>
+<p><code>std::ops::DerefMut</code></p>
+<p><code>std::ops::Generator</code></p>
+<p><code>std::ops::Index</code></p>
+<p><code>std::ops::IndexMut</code></p>
+<p><code>std::ops::RangeBounds</code></p>
+<p>The example of implementing <code>std::ops::Generator</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl_trait!{ _impl!(R) std::ops::Generator&lt;R&gt; _for!( Type )}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#unstable-traits" id="unstable-traits">Unstable traits</a></h2>
+<p>To implement these traits, the crate feature &quot;unstable&quot; should be opted in.</p>
+<p><code>Fn</code></p>
+<p><code>std::iter::TrustedLen</code></p>
+<p><code>std::ops::Generator</code></p>
+<h2><a class="header" href="#impl_super_traits-and-impl_all_traits" id="impl_super_traits-and-impl_all_traits"><code>impl_super_traits!{}</code> and <code>impl_all_traits!{}</code></a></h2>
+<p>The syntax of these two traits are similar with <code>impl_trait!{}</code>.</p>
+<p>The <code>impl_super_traits!{}</code> macro helps to implement the super trait(s) of the
+mentioned trait, e.g. <code>impl_super_traits!{ _impl!(Args) Fn&lt;Args&gt; _for!( Type )}</code>
+will implement <code>FnMut</code> and <code>FnOnce</code> for <code>Type</code>, but <strong>NOT</strong> <code>Fn</code>.</p>
+<p>The <code>impl_all_traits!{}</code> macro does what <code>impl_trait!{}</code> and
+<code>impl_super_traits!{}</code> does, e.g.
+<code>impl_all_traits!{ _impl!(Args) Fn&lt;Args&gt; _for!( Type )}</code> will implement <code>Fn</code>,
+<code>FnMut</code> and <code>FnOnce</code> for <code>Type</code>.</p>
+<h2><a class="header" href="#macro-inheritance" id="macro-inheritance">macro inheritance</a></h2>
+<p>If the library users want to support extra traits, they can write the extra
+implementations in their macro, and delegate other traits to
+<code>enumx::impl_trait!()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use enumx::export::{def_impls, impl_all_traits};
+
+macro_rules! impl_trait {
+    ($(_impl!($($gen:tt),*))* ExtraTrait&lt;$t:ident&gt; _for!($($ty:tt)+) $(_where!($($pred:tt)*))*) =&gt; {
+        // omitted
+    };
+    ($($tt:tt)+) =&gt; {
+        enumx::impl_trait!{ $($tt)+ }
+    };
+}
+
+
+macro_rules! impl_super_traits {
+    ($(_impl!($($gen:tt),*))* ExtraTrait&lt;$t:ident&gt; _for!($($ty:tt)+) $(_where!($($pred:tt)*))*) =&gt; {
+        // omitted
+    };
+    ($($tt:tt)+) =&gt; {
+        enumx::impl_super_traits!{ $($tt)+ }
+    };
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#sum-impl-trait" id="sum-impl-trait">Sum <code>impl Trait</code></a></h1>
+<p>This is an extension to allow multiple return types which implement the same trait.</p>
+<h2><a class="header" href="#a-hrefsum-exampleexamplea" id="a-hrefsum-exampleexamplea"><a href="sum-example">Example</a></a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[sum]
+fn f( cond: bool ) -&gt; impl Clone {
+    if cond {
+        #[variant] 1_i32
+    } else {
+        #[variant] &quot;false&quot;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#enums-external-to-function" id="enums-external-to-function">Enums external to function</a></h1>
+<p>In previous <a href="./sum.html#sum-example">example</a>, the <code>#[sum]</code> tag will generate an
+enum type local to the function. An anternative way is to use externally
+defined enums, for which the library users can implement traits manually.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use serde::{Serialize, Serializer};
+
+use enumx::export::*;
+// DO NOT use enumx::predefined::*;
+
+def_impls! {
+    enum Enum![2..=3];
+
+    impl Serialize for Enum![2..=3]
+        where _Variants!(): Serialize
+    {
+        fn serialize&lt;S: Serializer&gt;( &amp;self, serializer: S ) -&gt; Result&lt;S::Ok, S::Error&gt; {
+            _match!( _variant!().serialize( serializer ))
+        }
+    }
+}
+
+#[sum( Enum )]
+fn f( cond: bool ) -&gt; impl Serialize {
+    if cond {
+        #[variant] 1_i32
+    } else {
+        #[variant] &quot;false&quot;
+    }
+}
+
+#[sum( Enum )]
+fn g( cond: u32 ) -&gt; impl Serialize {
+    match cond % 3 {
+        0 =&gt; #[variant] 1_i32,
+        1 =&gt; #[variant] &quot;false&quot;,
+        2 =&gt; #[variant] true,
+        _ =&gt; unreachable!(),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#trait-annotation" id="trait-annotation">Trait annotation</a></h1>
+<p>The <code>#[sum]</code> tag will analyze the function's return type and decide which
+<code>impl Trait</code> to summarize. If it is not what you want, use
+<code>#[sum( impl Trait )]</code> to annotates the <code>impl Trait</code> explicitly.</p>
+<p>If both trait annotation and externally defined enum type are required, use
+<code>#[sum( impl Trait for Enum )]</code>.</p>
+<h1><a class="header" href="#the-variant-attribute" id="the-variant-attribute">The variant attribute</a></h1>
+<p>The <code>#[sum]</code> tag collects all expressions with <code>#[variant]</code> attributes and wraps them with enum constructors in the form of <code>SomeEnumName::_0</code>,
+<code>SomeEnumName::_1</code>.. respectively.  For example, the function body in previous
+<a href="./sum.html#sum-example">example</a> will be expanded to:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if cond {
+    __SumType2::_0( 1_i32 )
+} else {
+    __SumType2::_1( &quot;false&quot; )
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#merge-variants-of-the-same-types" id="merge-variants-of-the-same-types">Merge variants of the same types</a></h2>
+<p>The <code>#[variant]</code> attribute supports merging by giving the same name of merged
+variants. For example, a series of expresions with <code>#[variant( foo )]</code>,
+<code>#[variant]</code>, <code>#[variant( foo )]</code> will be wrapped with <code>_0</code>, <code>_1</code>, <code>_0</code>.</p>
+<h1><a class="header" href="#multiple-sum-tags" id="multiple-sum-tags">Multiple sum tags</a></h1>
+<p>This library supports to tag a function with multiple <code>#[sum]</code> attributes,
+which summarize different <code>impl Trait</code> into different enums.</p>
+<h2><a class="header" href="#more-syntax-of-sum-and-variant" id="more-syntax-of-sum-and-variant">More syntax of <code>#[sum]</code> and <code>#[variant]</code></a></h2>
+<ol>
+<li>
+<p><code>#[sum( sum_name =&gt; impl Trait )]</code></p>
+</li>
+<li>
+<p><code>#[sum( sum_name =&gt; impl Trait for Enum )]</code></p>
+</li>
+<li>
+<p><code>#[variant( sum_name =&gt; variant_name )]</code></p>
+</li>
+<li>
+<p><code>#[variant( sum_name =&gt; _ )]</code></p>
+</li>
+</ol>
+<p>The <code>sum_name</code> tells which <code>impl Trait</code> enum the <code>#[sum]</code>/<code>#[variant]</code> belongs
+to.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[sum( ok  =&gt; impl Clone )]
+#[sum( err =&gt; impl Clone )]
+fn sum_okeys_and_errors( branch: i32 ) -&gt; Result&lt;impl Clone, impl Clone&gt; {
+    match branch % 4 {
+        0 =&gt; Ok(  #[variant( ok  =&gt; _ )] branch ),
+        1 =&gt; Ok(  #[variant( ok  =&gt; _ )] () ),
+        2 =&gt; Err( #[variant( err =&gt; _ )] branch ),
+        3 =&gt; Err( #[variant( err =&gt; _ )] () ),
+        _ =&gt; unreachable!(),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#support-of-" id="support-of-">Support of <code>?</code></a></h1>
+<p>This library introduce a proc-macro attribute named <code>#[sum_err]</code>, to translate 
+the <code>expr?</code> expressions in a different manner than the Rust's default:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match expr {
+    Ok( value ) =&gt; value,
+    Err( error ) =&gt; return Err( #[variant] error ),
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A <code>#[sum]</code> tagged function should be tagged with <code>#[sum_err]</code> if it contains <code>?</code>
+expressions.</p>
+<h2><a class="header" href="#example" id="example">Example</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[sum_err]
+#[sum( impl Clone )]
+fn foo( branch: i32 ) -&gt; Result&lt;(), impl Clone&gt; {
+    match branch % 3 {
+        0 =&gt; Ok(()),
+        1 =&gt; Ok( Err( 0 )? ),
+        2 =&gt; Ok( Err( &quot;lorum&quot; )? ),
+        _ =&gt; unreachable!(),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note: put <code>#[sum_err]</code> <strong>before</strong> <code>#[sum]</code>.</p>
+<h1><a class="header" href="#enum-exchange" id="enum-exchange">Enum exchange</a></h1>
+<p>Suppose <code>Enum!(A,B,C,..)</code> denotes a type similar to <code>enum</code> that composed of
+variants A,B,C.., with extra features:</p>
+<ol>
+<li>
+<p>Variants of the duplicated type are merged.
+For instance, <code>Enum!(A,B,A)</code>  is <code>Enum!(A,B)</code>.</p>
+</li>
+<li>
+<p>Order of variants does not matter.
+For instance, <code>Enum!(A,B)</code> is <code>Enum!(B,A)</code>.</p>
+</li>
+<li>
+<p><code>Enum!()</code>s as variants are flattened.
+For instance, <code>Enum!(A, Enum!(B,C))</code> is <code>Enum!(A,B,C)</code>.</p>
+</li>
+<li>
+<p>Any subset of an <code>Enum!()</code> can be converted to it.
+For instance, <code>A</code>, <code>Enum!(A)</code> and <code>Enum!(A,B)</code> can be converted to
+<code>Enum!(A,B,C)</code>.</p>
+</li>
+</ol>
+<p>Such types, which are similar to Racket's &quot;union types&quot;, do not exist in Rust's
+type systems. With the help of this library, the best we can get is
+&quot;union values&quot;:</p>
+<ol>
+<li>
+<p><code>Enum!()</code>s that has duplicated variant types <strong>cannot</strong> be converted to each
+other without extra annotation, which is not practicable.</p>
+</li>
+<li>
+<p>Two <code>Enum!()</code>s composed of the same variant types but with different order
+can be converted to each other.
+For instance, <code>Enum!(A,B)</code> can be converted to <code>Enum!(B,A)</code>, and vise vesa.</p>
+</li>
+<li>
+<p><code>Enum!()</code>s as variants are <strong>not</strong> flattened in conversion.
+This library might support converting <code>Enum!(A,C)</code> to <code>Enum!(A, Enum!(B,C))</code> in
+the future( perhaps if Rust supports <code>where T != U</code> ), but not now.</p>
+</li>
+<li>
+<p>Any subset of an <code>Enum!()</code> can be converted to it.</p>
+</li>
+</ol>
+<p>This library names the conversion in #2 and #4 as &quot;enum exchange&quot;, and defines
+an derivable <a href="./exchange-trait.html"><code>Exchange</code> trait</a>.</p>
+<h1><a class="header" href="#the-exchange-trait" id="the-exchange-trait">The Exchange trait</a></h1>
+<p>This library provides <code>ExchangeFrom</code>/<code>ExchangeInto</code> traits which is similar to
+std <code>From</code>/<code>Into</code> but with extra phantom generic type.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ExchangeFrom&lt;Src, Index&gt; {
+    fn exchange_from( src: Src ) -&gt; Self;
+}
+
+pub trait ExchangeInto&lt;Dest, Index&gt; {
+    fn exchange_into( self ) -&gt; Dest;
+}
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>Blanket implementations of <code>ExchangeInto</code> are similar to <code>Into</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;Src, Dest, Index&gt; ExchangeInto&lt;Dest, Index&gt; for Src
+    where Dest: ExchangeFrom&lt;Src, Index&gt;,
+{
+    fn exchange_into( self ) -&gt; Dest {
+        Dest::exchange_from( self )
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Any enum in the form described below can derive these traits automatically, by
+using <code>#[derive( Exchange )]</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use enumx::export::*;
+
+#[derive( Exchange )]
+enum Data {
+    Bin( Vec&lt;u8&gt; ),
+    Text( String ),
+}
+
+#[derive( Exchange )]
+enum Value {
+    Bin( Vec&lt;u8&gt; ),
+    Text( String ),
+    Literial( &amp;'static str ),
+}
+
+// use ExchangeFrom
+let data = Data::exchange_from( &quot;foo&quot;.to_owned() );
+let value = Value::exchange_from( data );
+
+// use ExchangeInto
+let data: Data = &quot;foo&quot;.to_owned().exchange_into();
+let value: Value = data.exchange_into();
+<span class="boring">}
+</span></code></pre></pre>
+<p>This library provides predefined enums that have implement
+<code>ExchangeFrom</code>/<code>ExchangeInto</code>. The user can <code>use enumx::predefined::*;</code>, and use
+<code>Enum!()</code> macro to denote types, as described in
+<a href="./ad-hoc-enums.html">Ad-hoc enum types</a>.</p>
+<p>Alternatively, the user is able to define their own ad-hoc enum types:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use enumx::export::*;
+// do not use enumx::predefined::*;
+
+def_impls! {
+    #[derive( Exchange )]
+    pub enum Enum![ 1..=16 ];
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#type-as-pattern" id="type-as-pattern">Type as Pattern</a></h1>
+<p>The variant names of ad-hoc enums are not so attractive: <code>_0</code>,<code>_1</code>,<code>_2</code>..etc.
+There are some issues when these names are used in match expressions:</p>
+<ol>
+<li>
+<p>They are ugly and meaningless.
+The numbers do not reflect the types.</p>
+</li>
+<li>
+<p>Subject to changes of ad-hoc enum.
+For instance, changing <code>Enum!(Alpha,Gamma)</code> to <code>Enum!(Alpha,Beta,Gamma)</code> will
+break the arms matching <code>_1</code>.</p>
+</li>
+</ol>
+<p>This library provides a feature so called &quot;type as pattern&quot;, which extends the
+syntax of match expressions to accept variant type names in arm's pattern.</p>
+<h2><a class="header" href="#use-ty_pat-match" id="use-ty_pat-match">Use <code>#[ty_pat] match</code></a></h2>
+<p>to do pattern matching against an <code>Enum!(A, B, ..)</code>,
+the arms of which are not variants but types A, B, .. etc. The <code>fn</code> containing
+the match expression must be tagged <code>#[enumx]</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[enumx] fn foo( input: Enum!(String,i32) ) {
+    #[ty_pat] match input {
+        String(s) =&gt; println!( &quot;it's string:{}&quot;, s ),
+        i32(i) =&gt; println!( &quot;it's i32:{}&quot;, i ),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-ty_patgen_variants" id="use-ty_patgen_variants">Use <code>#[ty_pat(gen_variants)]</code></a></h2>
+<p>to generate missing types in <code>Enum!()</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[enumx] fn foo( input: Enum!(String,i32) ) -&gt; Enum!(String,i32) {
+    #[ty_pat(gen_variants)] match input {
+        i32(i) =&gt; (i+1).exchange_into(),
+        // generated arm: String(s) =&gt; s.exchange_into(),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-ty_patgen-ab" id="use-ty_patgen-ab">Use <code>#[ty_pat(gen A,B,..)]</code></a></h2>
+<p>to generate A,B,.. etc:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[enumx] fn foo( input: Enum!(String,i32) ) -&gt; Enum!(String,i32) {
+    #[ty_pat(gen String)] match input {
+        i32(i) =&gt; (i+1).exchange_into(),
+        // generated arm: String(s) =&gt; s.exchange_into(),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-typat" id="use-typat">Use <code>TyPat</code></a></h2>
+<p>to wrap types that are not paths, e.g. references, (), in a <code>#[ty_pat] match</code>'s
+arm:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[enumx] fn bar( input: Enum!(&amp;'static str,i32) ) {
+    #[ty_pat] match input {
+        TyPat::&lt;&amp;'static str&gt;(s) =&gt; println!( &quot;it's static str:{}&quot;, s ),
+        i32(i) =&gt; println!( &quot;it's i32:{}&quot;, i ),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#checked-exception" id="checked-exception">Checked exception</a></h1>
+<p>This library simulates checked exception by enumerating in function's signatures 
+every possible error types in <a href="./ad-hoc-enums.html">ad-hoc enums</a> which are
+<a href="./exchange.html"><code>Exchange</code>-able</a> and matched their variants'
+<a href="./typat.html">types as patterns</a>.</p>
+<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<p>Add this crate to Cargo.toml, and enable any feature you want</p>
+<p><code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">enumx = &quot;0.4&quot;
+cex = &quot;0.5&quot;
+</code></pre>
+<p><code>src/lib.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use enumx::export::*;
+use enumx::predefined::*; // or use your own enum types at your will.
+use cex::*;
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#extended-syntax" id="extended-syntax">Extended syntax:</a></h2>
+<ol>
+<li>
+<p><code>#[cex]</code> proc macro attribute for functions/closures/let-bindings returning
+checked exceptions.</p>
+</li>
+<li>
+<p><code>Result!()</code> annotates the return type.</p>
+</li>
+<li>
+<p><code>ret!()</code>/<code>throw!()</code> for control flow.</p>
+</li>
+<li>
+<p><code>#[ty_pat]</code> for &quot;type as pattern&quot;</p>
+</li>
+</ol>
+<h1><a class="header" href="#result-macro" id="result-macro"><code>Result!()</code> macro</a></h1>
+<p>The syntax of <code>Result!()</code> macro is
+<code>Result!( OkType throws Err1, Err2, .. )</code>, the underlying type of which is
+<code>Result&lt;OkType, Enum!(Err1, Err2, ..)&gt;</code>. However the <code>Result!()</code> macro is
+preferred over <code>Enum!()</code> because:</p>
+<ol>
+<li>
+<p><code>Enum!()</code> is subject to changes on feature of <code>log</code>/<code>env_log</code>, while
+<code>Result!()</code> is not.</p>
+</li>
+<li>
+<p><code>throws</code> is cool, shorter and more clear than <code>Enum!()</code>.</p>
+</li>
+</ol>
+<h2><a class="header" href="#use-result-to-enumerate-the-possible-error-types" id="use-result-to-enumerate-the-possible-error-types">Use <code>Result!()</code> to enumerate the possible error types</a></h2>
+<ul>
+<li>in function signature:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn throws_never() -&gt; Result!(i32) {/**/}
+
+struct SomeError;
+
+#[cex] fn foo() -&gt; Result!( i32 throws String, &amp;'static str, SomeError ) {/**/}
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li>in closure's signature:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo() {
+    let _f = #[cex] || -&gt; Result!( i32 throws String ) {/**/}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li>in the type annotation of a local let-binding:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo() {
+    #[cex] let v: Result!( i32 throws String ) = try {/**/};
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#the-retthrow-macros" id="the-retthrow-macros">The <code>ret!()</code>/<code>throw!()</code> macros</a></h1>
+<p>The underlying control flow constructs of these two macros are <code>return</code>.
+However, <code>ret!()</code>/<code>throw!()</code> macros are preferred over <code>return</code> because:</p>
+<ol>
+<li>
+<p>Using <code>return</code> is subject to changes on feature of <code>log</code>/<code>env_log</code>, while
+using <code>ret!()</code>/<code>throw!()</code> are not.</p>
+</li>
+<li>
+<p><code>ret!()</code>/<code>throw!()</code> are cool and more clear than <code>return</code>.</p>
+</li>
+<li>
+<p><code>ret!()</code> supports Ok-wrapping.</p>
+</li>
+</ol>
+<h2><a class="header" href="#the-syntax-of-ret" id="the-syntax-of-ret">The syntax of <code>ret!()</code></a></h2>
+<ol>
+<li>
+<p><code>ret!( ok_value )</code>, or</p>
+</li>
+<li>
+<p><code>ret!( result_value )</code></p>
+</li>
+</ol>
+<p>In other words, you can use <code>ret!()</code> to return an <code>Ok</code> expression:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws String ) {
+    ret!( 42 ); // Ok-wrapping
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>or you can use <code>ret!()</code> to return a <code>Result</code> expression:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws String ) {
+    ret!( Ok( 42 ));
+    // or ret!( Err( String::from( &quot;oops&quot; )))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#the-syntax-of-throw" id="the-syntax-of-throw">The syntax of <code>throw!()</code></a></h2>
+<p>is <code>throws!( err_value )</code>.</p>
+<p>You can use <code>throw!()</code> to return an <code>Err</code> expression:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws String, SomeError ) {
+    throw!( String::from( &quot;oops&quot; ))
+    // or throw!( SomeError )
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Thanks to the power of <a href="./exchange.html"><code>Exchange</code></a>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn bar() -&gt; Result!( i32 throws String, &amp;'static str, SomeError ) {
+    match foo() {
+        Ok(v) =&gt; ret!(v),
+        Err(e) =&gt; throw!(e), // all errors in foo()'s throws are in bar()'s
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Thanks to the power of <code>?</code> which looks like throwing checked exceptions:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// equivalent to bar()
+#[cex] fn baz() -&gt; Result!( i32 throws String, &amp;'static str, SomeError ) {
+    ret!( foo()? ) // of course you can use `?` to propagate errors
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#backtrace" id="backtrace">Backtrace</a></h1>
+<p>Backtrace is disabled by default. When enabled, locations of error propagation
+by <code>ret!()</code>, <code>throw!()</code> and <code>?</code> operator will be stored in the <code>Err</code> variant.</p>
+<h2><a class="header" href="#use-log-feature-to-enable-backtrace" id="use-log-feature-to-enable-backtrace">Use <code>log</code> feature to enable backtrace.</a></h2>
+<pre><code class="language-toml">[dependencies.cex]
+version = &quot;0.5&quot;
+features = [&quot;log&quot;]
+</code></pre>
+<h2><a class="header" href="#use-env_log-feature-to-enable-backtrace-if-the-envirnoment-variable" id="use-env_log-feature-to-enable-backtrace-if-the-envirnoment-variable">Use <code>env_log</code> feature to enable backtrace if the envirnoment variable</a></h2>
+<p><code>RUST_BACKTRACE</code> is 1 or &quot;full&quot;.</p>
+<pre><code class="language-toml">[dependencies.cex]
+version = &quot;0.5&quot;
+features = [&quot;env_log&quot;]
+</code></pre>
+<h2><a class="header" href="#use-pretty_log-feature-to-pretty-print-the-frames-as-if--were-used" id="use-pretty_log-feature-to-pretty-print-the-frames-as-if--were-used">Use <code>pretty_log</code> feature to pretty-print the frames, as if &quot;{:#?}&quot; were used.</a></h2>
+<pre><code class="language-toml">[dependencies.cex]
+version = &quot;0.5&quot;
+features = [&quot;log&quot;,&quot;pretty_log&quot;]
+# or features = [&quot;env_log&quot;,&quot;pretty_log&quot;]
+</code></pre>
+<pre><pre class="playground"><code class="language-rust no_run">use enumx::export::*;
+use enumx::predefined::*;
+use cex::*;
+
+#[cex]
+pub fn foo() -&gt; Result!( () throws () ) {
+    throw!( () );
+}
+
+#[cex]
+pub fn bar() -&gt; Result!( () throws () ) {
+    ret!( foo()? );
+}
+
+fn main() {
+    bar().unwrap();
+}
+</code></pre></pre>
+<p>The output is similar as follows:</p>
+<pre><code class="language-text">thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: _0(Log {
+    error: (),
+    agent: [
+        Frame {
+            module: &quot;my_program&quot;,
+            file: &quot;src/main.rs&quot;,
+            line: 5,
+            column: 13,
+            info: Some(
+                &quot;throw!(())&quot;,
+            ),
+        },
+        Frame {
+            module: &quot;my_program&quot;,
+            file: &quot;src/main.rs&quot;,
+            line: 10,
+            column: 11,
+            info: Some(
+                &quot;foo()&quot;,
+            ),
+        },
+    ],
+})', src/main.rs:14:5
+</code></pre>
+<h2><a class="header" href="#forward-log-features-to-cex-crate" id="forward-log-features-to-cex-crate">Forward log features to cex crate</a></h2>
+<pre><code class="language-toml">[features]
+log = [&quot;cex/log&quot;]
+env_log = [&quot;cex/env_log&quot;]
+pretty_log = [&quot;cex/pretty_log&quot;]
+</code></pre>
+<h2><a class="header" href="#retthrow-could-have-the-second-argument-as-a-customized-log-item" id="retthrow-could-have-the-second-argument-as-a-customized-log-item"><code>ret!()</code>/<code>throw!()</code> could have the second argument as a customized log item.</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ret!( expr, || frame!( &quot;expect an ok value&quot; ));
+throw!( expr, || frame!( &quot;oops&quot; ));
+<span class="boring">}
+</span></code></pre></pre>
+<p>Even if backtrace is disabled at compile time, these will compile. The second
+argument just has no effect.</p>
+<h1><a class="header" href="#type-as-pattern-makes-sense-for-narrowing" id="type-as-pattern-makes-sense-for-narrowing">&quot;Type as Pattern&quot; makes sense for narrowing</a></h1>
+<p>Suppose two functions which returns &quot;checked exceptions&quot;:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( () throws A,B );
+
+#[cex] fn bar() -&gt; Result!( () throws A,B,C );
+<span class="boring">}
+</span></code></pre></pre>
+<p>If we call <code>foo()</code> in <code>bar()</code>, the errors in <code>foo()</code> may be collected into
+<code>bar()</code>'s error type <code>Enum!(A,B,C)</code>, which is &quot;wider&quot; than <code>foo()</code>'s error type 
+<code>Enum!(A,B)</code>. Usually <code>?</code> could be used for convenience, propagating errors
+without the need of writing a match expression to handle.</p>
+<p>In the contrast, if we call <code>bar()</code> in <code>foo()</code>, it is not possible for <code>?</code>to
+propagate the errors from <code>bar()</code> because <code>foo()</code>'s error type is &quot;narrower&quot;
+than <code>bar()</code>'s. We must write some match expression and will meet the
+<a href="./typat.html">issues</a>.</p>
+<p>The <code>#[ty_pat]</code> attribute is enabled inside a <code>#[cex]</code> tagged function or
+closure, to address these issues and make propagating convenient again.</p>
+<h2><a class="header" href="#use-ty_pat-match-1" id="use-ty_pat-match-1">Use <code>#[ty_pat] match</code></a></h2>
+<p>to map errors returned by <code>#[cex]</code> functions or closures:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( () throws String, SomeError ) {/**/}
+
+#[cex] fn bar() {
+    if let Err( err ) = foo() {
+        #[ty_pat] match err {
+            String( s ) =&gt; println!( &quot;foo's error:{}&quot;, s ),
+            SomeError =&gt; println!( &quot;foo's error: SomeError&quot; ),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-typat-1" id="use-typat-1">Use <code>TyPat</code></a></h2>
+<p>to wrap types that are not paths, e.g. references, (), in a <code>#[ty_pat] match</code>'s
+arm:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws &amp;'static str, SomeError ) {/**/}
+
+#[cex] fn bar() {
+    if let Err( err ) = foo() {
+        #[ty_pat] match err {
+            TyPat::&lt;&amp;'static str&gt;( s ) =&gt; println!( &quot;foo's error:{}&quot;, s ),
+            SomeError =&gt; println!( &quot;foo's error: SomeError&quot; ),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-ty_patgen_throws-match" id="use-ty_patgen_throws-match">Use <code>#[ty_pat(gen_throws)] match</code></a></h2>
+<p>to automatically propagate errors enumerated in throws:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws String, SomeError ) {/**/}
+
+#[cex] fn bar() -&gt; Result!( i32 throws String ) {
+    foo().or_else( |err| #[ty_pat(gen_throws)] match err {
+        SomeError =&gt; ret!(0),
+        // generated arm: String(s) =&gt; throw!(s),
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#use-ty_patgen-ab-match" id="use-ty_patgen-ab-match">Use <code>#[ty_pat(gen A,B,..)] match</code></a></h2>
+<p>to automatically propagate errors A,B,.. enumerated in the attribute:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cex] fn foo() -&gt; Result!( i32 throws String, SomeError ) {/**/}
+
+#[cex] fn bar() -&gt; Result!( i32 throws String ) {
+    foo().or_else( |err| #[ty_pat(gen String)] match err {
+        SomeError =&gt; ret!(0),
+        // generated arm: String(s) =&gt; throw!(s),
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#fallback-as-impl-trait" id="fallback-as-impl-trait">Fallback as <code>impl Trait</code></a></h1>
+<p>Sometimes the downstream users do not bother &quot;poluting&quot; signatures of functions
+which call upstream <code>#[cex]</code> APIs returning checked exceptions. If all variants
+of the error <code>Enum!()</code> have implemented some famous trait, e.g.
+<code>std::error::Error</code>, the downstream users get a chance to simply write
+<code>-&gt; Result&lt;_, impl std::error::Error&gt;</code> in their function signatures.</p>
+<h2><a class="header" href="#a-hrefcex-as-impl-traithtmlexampleexamplea" id="a-hrefcex-as-impl-traithtmlexampleexamplea"><a href="cex-as-impl-trait.html#example">Example</a></a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::error::Error;
+use enumx::export::*;
+use enumx::predefined::*;
+use cex::*;
+
+impl Error for A { /* omitted */ }
+impl Error for B { /* omitted */ }
+impl Error for C { /* omitted */ }
+
+#[cex] pub fn upstream() -&gt; Result!( () throws A, B, C );
+
+fn downstream() -&gt; Result&lt;(), impl Error&gt; {
+    Ok( upstream()? )
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
