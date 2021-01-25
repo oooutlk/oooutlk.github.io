@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> trees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts.html"><strong aria-hidden="true">1.1.</strong> concepts</a></li><li class="chapter-item expanded "><a href="tree.html"><strong aria-hidden="true">1.2.</strong> tree</a></li><li class="chapter-item expanded "><a href="forest.html"><strong aria-hidden="true">1.3.</strong> forest</a></li><li class="chapter-item expanded "><a href="node.html"><strong aria-hidden="true">1.4.</strong> node</a></li><li class="chapter-item expanded "><a href="crud.html"><strong aria-hidden="true">1.5.</strong> create,read,update,delete</a></li><li class="chapter-item expanded "><a href="notations.html"><strong aria-hidden="true">1.6.</strong> notations</a></li><li class="chapter-item expanded "><a href="str-repr.html"><strong aria-hidden="true">1.7.</strong> string representation</a></li><li class="chapter-item expanded "><a href="iter.html"><strong aria-hidden="true">1.8.</strong> traversal via iterators</a></li><li class="chapter-item expanded "><a href="dfs.html"><strong aria-hidden="true">1.9.</strong> depth first traversal</a></li><li class="chapter-item expanded "><a href="bfs.html"><strong aria-hidden="true">1.10.</strong> breadth first traversal</a></li><li class="chapter-item expanded "><a href="rc.html"><strong aria-hidden="true">1.11.</strong> shared ownership</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#trees" id="trees">trees</a></h1>
+<h2><a class="header" href="#quickstart" id="quickstart">Quickstart</a></h2>
+<p>Impatient readers can start with the <a href="./notations.html">notation chapter</a>.</p>
+<h2><a class="header" href="#overview" id="overview">Overview</a></h2>
+<ol>
+<li>
+<p>Step-by-step <a href="./crud.html">creating, reading, updating, deleting</a> and iterating
+nodes with assocated data items.</p>
+</li>
+<li>
+<p>Compact notations to express trees: <code>-</code>,<code>/</code> encoded or tuple encoded trees.</p>
+</li>
+<li>
+<p>Depth first search cursor.</p>
+</li>
+<li>
+<p>Breadth first search iterators.</p>
+</li>
+<li>
+<p>Trees can be built by stages, with nodes stored scatteredly among memory.</p>
+</li>
+<li>
+<p>Trees can be built once through, with nodes stored contiguously.</p>
+</li>
+<li>
+<p>Support exclusive ownership with static borrow check.</p>
+</li>
+<li>
+<p>Support shared ownership with dynamic borrow check.</p>
+</li>
+</ol>
+<h1><a class="header" href="#concepts" id="concepts">Concepts</a></h1>
+<p>The definitions of trees are as follows:</p>
+<ul>
+<li>
+<p>A tree is composed of one or more nodes.</p>
+</li>
+<li>
+<p>A node has zero or more nodes as its children.</p>
+</li>
+<li>
+<p>A node has zero or one node as its parent.</p>
+</li>
+<li>
+<p>The node without parent is called the tree's root.</p>
+</li>
+<li>
+<p>A node associates data of generic type, and data of all nodes in the same tree
+must be of the same type.</p>
+</li>
+<li>
+<p>Children nodes preserve insertion order.</p>
+</li>
+<li>
+<p>A forest is composed of zero or more nodes.</p>
+</li>
+<li>
+<p>A node's children is a non-owning forest.</p>
+</li>
+<li>
+<p>Two node's are siblings if their parents are the same node.</p>
+</li>
+</ul>
+<h1><a class="header" href="#tree" id="tree">Tree</a></h1>
+<p><code>Tree</code> is composed of one or more <code>Node</code>s. A tree is always non-empty.</p>
+<h2><a class="header" href="#tree-root" id="tree-root">Tree root</a></h2>
+<p><code>Tree</code> can be constructed from a root value of type <code>T</code>, which can be accessed
+later via <code>root()</code> and <code>root_mut()</code>.</p>
+<h2><a class="header" href="#children" id="children">Children</a></h2>
+<p><code>Tree</code> can insert/delete child <code>Node</code>s at front/back of its children list,
+which is a conceptual <code>Forest</code> and can be removed once the <code>abandon()</code> is called.</p>
+<h2><a class="header" href="#degree" id="degree">Degree</a></h2>
+<p>The amount of child nodes of a tree is called tree's <code>degree()</code>.</p>
+<p>The amount of all nodes of a tree is returned by <code>node_count()</code>.</p>
+<h2><a class="header" href="#breadth-first-search" id="breadth-first-search">Breadth first search</a></h2>
+<p>A <code>Tree</code> may be converted to an owning iterator via <code>into_bfs()</code>, which
+iterates all its nodes in the manner of breadth first search.</p>
+<h1><a class="header" href="#forest" id="forest">Forest</a></h1>
+<p>A <code>Forest</code> is composed of zero or more <code>Node</code>s. An empty forest is constructed
+via <code>Forest::new()</code>.</p>
+<h2><a class="header" href="#children-1" id="children-1">Children</a></h2>
+<p>A <code>Forest</code> can be considered as a list of <code>Node</code>s, with the ability of
+inserting/deleting child nodes at its front/back: <code>push_front()</code>, <code>push_back()</code>,
+<code>pop_front()</code> and <code>pop_back()</code>. The first and last child can be accessed via
+<code>front()</code>/<code>front_mut()</code> and <code>back()</code>/<code>back_mut()</code>.</p>
+<p>A forest can merge another one via <code>prepend()</code> or <code>append()</code>.</p>
+<p>Forest's children can be iterated via <code>iter()</code>/<code>iter_mut()</code>/<code>into_iter()</code>.</p>
+<h2><a class="header" href="#degree-1" id="degree-1">Degree</a></h2>
+<p>The amount of child nodes of a forest is called forest's <code>degree()</code>.
+A forest <code>has_no_child()</code> if its degree is 0.</p>
+<p>The amount of desendant nodes of a forest is returned by <code>node_count()</code>.</p>
+<h2><a class="header" href="#breadth-first-search-1" id="breadth-first-search-1">Breadth first search</a></h2>
+<p>A <code>Forest</code> may provide <code>bfs()</code>/<code>bfs_mut()</code>/<code>into_bfs()</code>, which iterate all
+its child nodes in the manner of breadth first search.</p>
+<h1><a class="header" href="#node" id="node">Node</a></h1>
+<p>A <code>Node</code> is associated with data of type <code>T</code>, which is accessible via
+<code>data()</code>/<code>data_mut()</code> or even <code>pub data</code> field.</p>
+<p>Node may have zero or more <code>Node</code>s as its children; zero or one node as its
+<code>parent()</code>.</p>
+<p>Node can be cloned to an owning <code>Tree</code> via <code>to_tree()</code>, with all its descendant
+nodes cloned.</p>
+<p>Node can be <code>detach()</code>-ed from its parent, making a standalone <code>Tree</code>.</p>
+<h2><a class="header" href="#children-2" id="children-2">Children</a></h2>
+<p>The children of a <code>Node</code> can be considered as a list of <code>Node</code>s, with the
+ability of inserting/deleting child nodes at its front/back: <code>push_front()</code>,
+<code>push_back()</code>, <code>pop_front()</code> and <code>pop_back()</code>. The first and last child can be
+accessed via <code>front()</code>/<code>front_mut()</code> and <code>back()</code>/<code>back_mut()</code>.</p>
+<p>A forest can be merged via <code>prepend()</code> or <code>append()</code>.</p>
+<p>Node's children can be iterated via <code>iter()</code>/<code>iter_mut()</code>/<code>into_iter()</code>.</p>
+<h2><a class="header" href="#siblings" id="siblings">Siblings</a></h2>
+<p>Two node's are siblings if their parents are the same node.</p>
+<p>Node can add an sibling node before/after itself via <code>insert_prev_sib()</code>/
+<code>insert_next_sib()</code>.</p>
+<h2><a class="header" href="#degree-2" id="degree-2">Degree</a></h2>
+<p>The amount of child nodes of a node is called node's <code>degree()</code>.
+A node <code>has_no_child()</code> if its degree is 0.</p>
+<p>The amount of all nodes( including itself and its descendants ) of a node is
+returned by <code>node_count()</code>.</p>
+<h2><a class="header" href="#breadth-first-search-2" id="breadth-first-search-2">Breadth first search</a></h2>
+<p>A <code>Node</code> may provide <code>bfs()</code>/<code>bfs_mut()</code>, which iterate all its child nodes in
+the manner of breadth first search.</p>
+<h1><a class="header" href="#create-read-update-delete" id="create-read-update-delete">Create, read, update, delete</a></h1>
+<h2><a class="header" href="#tree-crud-apis" id="tree-crud-apis">Tree CRUD APIs</a></h2>
+<p>A tree can be created via <code>Tree::new()</code> which constructs the root node only with
+associated data.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::Tree;
+let mut tree = Tree::new(9);
+<span class="boring">}
+</span></code></pre></pre>
+<p>This will construct a tree composed of only one root node with data 9.</p>
+<pre><code class="language-text">.............
+.     9     .
+.............
+</code></pre>
+<p>The root node can be accessed via <code>Tree::root()</code>/<code>Tree::root_mut()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let root = tree.root();
+assert!( root.has_no_child() );
+<span class="boring">}
+</span></code></pre></pre>
+<p>The associated data can be read/updated via <code>Tree::data()</code>/<code>Tree::data_mut()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>assert_eq!( root.data(), &amp;9 );
+
+let root = tree.root_mut();
+*root.data_mut() = 0;
+<span class="boring">}
+</span></code></pre></pre>
+<p>The root data has been modified:</p>
+<pre><code class="language-text">.............
+.     0     .
+.............
+</code></pre>
+<p>A tree can adopt other trees as children via <code>Tree::push_back()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>tree.push_back( Tree::new(1) );
+tree.push_back( Tree::new(2) );
+<span class="boring">}
+</span></code></pre></pre>
+<p>This will add two child nodes.</p>
+<pre><code class="language-text">.............
+.     0     .
+.   /   \   .
+.  1     2  .
+.............
+</code></pre>
+<p>The child nodes can be accessed via <code>iter()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let iter = tree.iter();
+assert_eq!( iter.next().unwrap().data(), &amp;1 );
+assert_eq!( iter.next().unwrap().data(), &amp;2 );
+<span class="boring">}
+</span></code></pre></pre>
+<p>Specially, the first/last child can be accessed via <code>front()</code>/<code>back()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>assert_eq!( tree.front().unwrap().data(), &amp;1 );
+assert_eq!( tree.back() .unwrap().data(), &amp;2 );
+<span class="boring">}
+</span></code></pre></pre>
+<p>A node can adopt other trees as children via <code>Node::push_back()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let node_1 = tree.front_mut().unwrap();
+node_1.push_back( Tree::new(3) );
+node_1.push_back( Tree::new(4) );
+node_1.push_back( Tree::new(5) );
+<span class="boring">}
+</span></code></pre></pre>
+<p>The tree will be:</p>
+<pre><code class="language-text">.............
+.     0     .
+.   /   \   .
+.  1     2  .
+. /|\       .
+.3 4 5      .
+.............
+</code></pre>
+<p>Nodes can be removed via <code>Node::detach()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let tree_4 = node_1.iter_mut().nth(1).unwrap().detach();
+<span class="boring">}
+</span></code></pre></pre>
+<p>The tree will be:</p>
+<pre><code class="language-text">.............
+.     0     .
+.   /   \   .
+.  1     2  .
+. / \       .
+.3   5      .
+.............
+</code></pre>
+<p>Specially, the first/last child can be removed via <code>pop_front()</code>/<code>pop_back()</code>.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>node_1.pop_front();
+<span class="boring">}
+</span></code></pre></pre>
+<p>The tree will be:</p>
+<pre><code class="language-text">.............
+.     0     .
+.   /   \   .
+.  1     2  .
+.  |        .
+.  5        .
+.............
+</code></pre>
+<h2><a class="header" href="#forest-crud-apis" id="forest-crud-apis">Forest CRUD APIs</a></h2>
+<p>The <code>Forest</code>'s APIs are similar with <code>Tree</code>'s. The main difference is that a
+<code>Forest</code> does not have root data, and may be empty.</p>
+<h2><a class="header" href="#node-crud-apis" id="node-crud-apis">Node CRUD APIs</a></h2>
+<p>The <code>Node</code>'s APIs are similar with <code>Tree</code>'s. The main difference is that <code>Node</code>s
+provided to library users are always in the form of <code>&amp;Node&lt;_&gt;</code> or
+<code>Pin&lt;&amp;mut Node&lt;_&gt;&gt;</code>, which do not have ownership.</p>
+<h1><a class="header" href="#notations" id="notations">Notations</a></h1>
+<p>Using <code>push_back()</code> to construct a big tree can be verbose. This library
+provides some convenient notations to express trees compactly.</p>
+<h2><a class="header" href="#operator-overloading-of----for-scatteredly-stored-trees" id="operator-overloading-of----for-scatteredly-stored-trees">Operator overloading of <code>-</code>, <code>/</code> for scatteredly stored trees</a></h2>
+<h3><a class="header" href="#tree-notations" id="tree-notations">Tree notations</a></h3>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::tr;      // tr stands for tree
+
+tr(0);              // a single tree node with data 0. tr(0) has no children
+tr(0) /tr(1);       // tr(0) with one child tr(1)
+tr(0) /tr(1)/tr(2); // tr(0) with children tr(1) and tr(2)
+
+// tr(0) with children tr(1) and tr(4),
+// tr(1) with children tr(2) and tr(3),
+// tr(4) with children tr(5) and tr(6).
+// Spaces and line breaks are for pretty format only.
+tr(0)
+    /( tr(1) /tr(2)/tr(3) )
+    /( tr(4) /tr(5)/tr(6) );
+<span class="boring">}
+</span></code></pre></pre>
+<h3><a class="header" href="#forest-notations" id="forest-notations">Forest notations</a></h3>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{fr, tr}; // fr stands for forest
+
+fr::&lt;i32&gt;();        // an empty forest
+fr() - tr(1);       // forest with one child tr(1)
+- tr(1);            // same forest as above, the leading `fr()` can be omitted.
+- tr(1) - tr(2);    // forest with child tr(1) and tr(2).
+tr(1) - tr(2);      // same forest as above, the leading `-` can be omitted.
+
+// forest with children tr(1) and tr(4),
+// tr(1) with children tr(2) and tr(3),
+// tr(4) with children tr(5) and tr(6).
+-( tr(1) /tr(2)/tr(3) )
+-( tr(4) /tr(5)/tr(6) );
+
+// A tree tr(0) whose children are the forest described above.
+tr(0) /(
+    -( tr(1) /( -tr(2)-tr(3) ) )
+    -( tr(4) /( -tr(5)-tr(6) ) )
+);
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#tuples-for-contiguously-stored-trees" id="tuples-for-contiguously-stored-trees">Tuples for contiguously stored trees</a></h2>
+<h3><a class="header" href="#tree-notations-1" id="tree-notations-1">Tree notations</a></h3>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let tree = trees::Tree::&lt;i32&gt;::from_tuple(( 0, (1,2,3), (4,5,6) ));
+<span class="boring">}
+</span></code></pre></pre>
+<p>The constructed tree is equvalent to:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>tr(0) /(
+    -( tr(1) /( -tr(2)-tr(3) ) )
+    -( tr(4) /( -tr(5)-tr(6) ) )
+);
+<span class="boring">}
+</span></code></pre></pre>
+<h3><a class="header" href="#forest-notations-1" id="forest-notations-1">Forest notations</a></h3>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let forest = trees::Forest::&lt;i32&gt;::from_tuple(( (1,2,3), (4,5,6) ));
+<span class="boring">}
+</span></code></pre></pre>
+<p>The constructed forest is equivalent to:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>-( tr(1) /( -tr(2)-tr(3) ) )
+-( tr(4) /( -tr(5)-tr(6) ) );
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#string-representation" id="string-representation">String representation</a></h1>
+<p>In current implementation of <code>Display</code>, children are separated by spaces and
+grouped in the parentheses that follow their parent closely.</p>
+<h2><a class="header" href="#example" id="example">Example</a></h2>
+<pre><code class="language-text">.............
+.     0     .
+.   /   \   .
+.  1     4  .
+. / \   / \ .
+.2   3 5   6.
+.............
+</code></pre>
+<p>String representation of the tree drawn above is:</p>
+<pre><code class="language-text">0( 1( 2 3 ) 4( 5 6 ) )
+</code></pre>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{tr, fr};
+
+let tree = tr(0) /( tr(1) /tr(2)/tr(3) ) /( tr(4) /tr(5)/tr(6) );
+let str_repr = &quot;0( 1( 2 3 ) 4( 5 6 ) )&quot;;
+assert_eq!( tree.to_string(), str_repr );
+
+assert_eq!( fr::&lt;i32&gt;().to_string(), &quot;()&quot; );
+
+let forest = -( tr(1) /tr(2)/tr(3) ) -( tr(4) /tr(5)/tr(6) );
+let str_repr = &quot;( 1( 2 3 ) 4( 5 6 ) )&quot;;
+assert_eq!( forest.to_string(), str_repr );
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#traversal-via-iterators" id="traversal-via-iterators">Traversal via iterators</a></h1>
+<p>Node provides iterators <code>iter()</code>/<code>iter_mut()</code> to iterate over its child nodes,
+each of which provides iterators to iterate over their child nodes, and so on.</p>
+<h2><a class="header" href="#example-1" id="example-1">Example</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{tr, Node};
+use std::fmt::Display;
+
+let tree = tr(0)
+    /( tr(1) /tr(2)/tr(3) )
+    /( tr(4) /tr(5)/tr(6) );
+
+fn tree_to_string&lt;T:Display&gt;( node: &amp;Node&lt;T&gt; ) -&gt; String {
+    if node.has_no_child() {
+        node.data.to_string()
+    } else {
+        format!( &quot;{}( {})&quot;, node.data, 
+        node.iter().fold( String::new(),
+            |s,c| format!( &quot;{}{} &quot;, s, tree_to_string(c) ))
+    }
+}
+
+assert_eq!( tree_to_string( &amp;tree ), &quot;0( 1( 2 3 ) 4( 5 6 ) )&quot; );
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#depth-first-traversal" id="depth-first-traversal">Depth first traversal</a></h1>
+<p><code>Tree&lt;T&gt;</code>/<code>Forest&lt;T&gt;</code> can be converted to <code>TreeWalk&lt;T&gt;</code>/<code>ForestWalk&lt;T&gt;</code> which
+act like cursors for depth first traversal.</p>
+<p>Keeping on <code>get()</code>-ing current node then <code>forward()</code>ing the cursor results in a
+depth first search sequence. The two operations are combined as <code>next()</code>.</p>
+<p>During traversal, the cursor can jump <code>to_parent()</code>/<code>to_child()</code>/<code>to_sib()</code> at
+any time. To restart DFS search of a node, use <code>revisit()</code>.</p>
+<h2><a class="header" href="#example-2" id="example-2">Example</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{tr, Visit, TreeWalk};
+
+let tree = tr(0) /( tr(1)/tr(2)/tr(3) ) /( tr(4)/tr(5)/tr(6) );
+let mut walk = TreeWalk::from( tree );
+assert_eq!( walk.get(), Some( Visit::Begin(
+    ( tr(0) /( tr(1)/tr(2)/tr(3) ) /( tr(4)/tr(5)/tr(6) ) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Begin(
+    ( tr(1) /tr(2)/tr(3) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Leaf(
+    tr(2)
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Leaf(
+    tr(3)
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::End(
+    ( tr(1) /tr(2)/tr(3) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Begin(
+    ( tr(4) /tr(5)/tr(6) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Leaf(
+    tr(5)
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::Leaf(
+    tr(6)
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::End(
+    ( tr(4) /tr(5)/tr(6) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), Some( Visit::End(
+    ( tr(0) /( tr(1)/tr(2)/tr(3) ) /( tr(4)/tr(5)/tr(6) ) )
+    .root() )));
+
+walk.forward();
+assert_eq!( walk.get(), None );
+
+walk.forward();
+assert_eq!( walk.get(), None );
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#breath-first-traversal" id="breath-first-traversal">Breath first traversal</a></h1>
+<p><code>Tree</code>/<code>Forest</code>/<code>Node</code> may provide <code>bfs()</code>/<code>bfs_mut()</code>/<code>into_bfs()</code>,
+which iterate all its child nodes in the manner of breadth first search. Note
+that not all data structures provide all three kinds of iterators.</p>
+<p>During breadth first search, you can get:</p>
+<ol>
+<li>
+<p>data associated with <code>Node</code>.</p>
+</li>
+<li>
+<p>size info -- degree and node count.</p>
+</li>
+</ol>
+<h2><a class="header" href="#example-of-bfs-iteration" id="example-of-bfs-iteration">Example of BFS iteration</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{Size, bfs, tr};
+
+let tree = tr(0) /( tr(1)/tr(2)/tr(3) ) /( tr(4)/tr(5)/tr(6) );
+let visits = tree.into_bfs().iter.collect::&lt;Vec&lt;_&gt;&gt;();
+assert_eq!( visits, vec![
+    bfs::Visit{ data: 0, size: Size{ degree: 2, descendants: 6 }},
+    bfs::Visit{ data: 1, size: Size{ degree: 2, descendants: 2 }},
+    bfs::Visit{ data: 4, size: Size{ degree: 2, descendants: 2 }},
+    bfs::Visit{ data: 2, size: Size{ degree: 0, descendants: 0 }},
+    bfs::Visit{ data: 3, size: Size{ degree: 0, descendants: 0 }},
+    bfs::Visit{ data: 5, size: Size{ degree: 0, descendants: 0 }},
+    bfs::Visit{ data: 6, size: Size{ degree: 0, descendants: 0 }},
+]);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Trees can be constructed from and converted into an owning BFS iterator, making
+it a bridge for conversions between trees.</p>
+<h2><a class="header" href="#example-of-collecting-scattered-nodes-to-piled-ones" id="example-of-collecting-scattered-nodes-to-piled-ones">Example of collecting scattered nodes to piled ones</a></h2>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{Tree, tr};
+
+let scattered_tree = tr(0) /( tr(1)/tr(2)/tr(3) ) /( tr(4)/tr(5)/tr(6) );
+let piled_tree = Tree::&lt;i32&gt;::from( scattered_tree.into_bfs() );
+<span class="boring">}
+</span></code></pre></pre>
+<h1><a class="header" href="#shared-ownership" id="shared-ownership">Shared ownership</a></h1>
+<p><code>Tree</code>s, <code>Forest</code>s have exclusive ownership and borrowing of their <code>Node</code>s are
+statically checked.</p>
+<p>A <code>Tree</code> could be safely converted to <code>RcNode</code> to support shared ownership and
+dynamic borrow check.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use trees::{RcNode, Tree};
+let tree = Tree::&lt;i32&gt;::from(( 0, (1,2,3), (4,5,6), ));
+let root = RcNode::from( tree );
+<span class="boring">}
+</span></code></pre></pre>
+<p>An <code>RcNode</code> could be unsafely converted to <code>Tree</code> to get exclusive ownership and
+static borrow check.</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let tree = unsafe{ root.into_tree() };
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>WeakNode</code> is the non-owning version of <code>RcNode</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
