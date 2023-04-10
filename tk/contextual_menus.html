@@ -186,18 +186,18 @@ fn main() -&gt; TkResult&lt;()&gt; {
         menu.add_command( -label(i) )?;
     }
 
-    tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
-            move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
-                Ok( tk.popup( menu, x, y, None )? )
-            }
+    let handler = tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
+        move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
+            Ok( tk.popup( menu, x, y, None )? )
+        }
     );
 
     use event::*;
     if tk.windowing_system()? == TkWindowingSystem::Aqua {
-        root.bind( button_press_2(), &quot;handler&quot; )?;
-        root.bind( control().button_press_1(), &quot;handler&quot; )?;
+        root.bind( button_press_2(), &amp;*handler )?;
+        root.bind( control().button_press_1(), &amp;*handler )?;
     } else {
-        root.bind( button_press_3(), &quot;handler&quot; )?;
+        root.bind( button_press_3(), &amp;*handler )?;
     }
 
     Ok( main_loop() )
@@ -233,6 +233,22 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

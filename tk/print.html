@@ -3016,10 +3016,13 @@ surprisingly, if you want to add a submenu to an existing menu, you also use a
 </span>let menu_recent = menu_file.add_menu(())?;
 menu_file.add_cascade( -menu(menu_recent) -label(&quot;Open Recent&quot;) )?;
 for f in recent_files {
-    menu_recent.add_command(
-        -label( format!(&quot;file tail {}&quot;,f) )
-        -command( format!(&quot;openFile {}&quot;,f) )
-    )?;
+    let f = PathBuf::from(f);
+    if let Some( file_name ) = f.file_name() {
+        menu_recent.add_command(
+            -label( file_name.to_str() )
+            -command(( &quot;openFile&quot;, f ))
+        )?;
+    }
 }
 <span class="boring">}
 </span></code></pre></pre>
@@ -3240,8 +3243,31 @@ we'd send it to a specific window.</p>
 <li><code>event::virtual_event(&quot;Undo&quot;)</code>.</li>
 </ul>
 <p>For additional information, see the <code>event</code> mod.</p>
+<h2 id="construct-all-menus-in-one-statement"><a class="header" href="#construct-all-menus-in-one-statement">Construct all menus in one statement</a></h2>
+<p>The tk crate provides <code>add_menus()</code>, a convenient API to construct all menus in
+one place:</p>
+<pre><pre class="playground"><code class="language-rust no_run">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let win = root.add_toplevel(())?;
+let created_widgets = win.add_menus( &quot;menubar&quot;
+    -menu::cascade( &quot;file&quot; -label(&quot;File&quot;)
+        -menu::command( -label(&quot;New&quot;)       -command(&quot;newFile&quot;) )
+        -menu::command( -label(&quot;Open...&quot;)   -command(&quot;openFile&quot;) )
+        -menu::command( -label(&quot;Close&quot;)     -command(&quot;closeFile&quot;) )
+        -menu::cascade( &quot;recent&quot; -label(&quot;Open Recent&quot;) )
+        -menu::separator( no_arg() )
+        -menu::checkbutton( -label(&quot;Check&quot;) -variable(&quot;check&quot;) -onvalue(1) -offvalue(0) )
+        -menu::radiobutton( -label(&quot;One&quot;)   -variable(&quot;radio&quot;) -value(1) )
+        -menu::radiobutton( -label(&quot;Two&quot;)   -variable(&quot;radio&quot;) -value(2) )
+    )
+)?;
+<span class="boring">}
+</span></code></pre></pre>
+<p>See <code>add_menus</code> example for more.</p>
 <h2 id="run-example-12"><a class="header" href="#run-example-12">Run Example</a></h2>
 <p><code>cargo run --example menu</code></p>
+<p><code>cargo run --example add_menus</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="platform-menus"><a class="header" href="#platform-menus">Platform Menus</a></h1>
 <p>Each platform has a few menus in every menubar that are handled specially by Tk.</p>
 <h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
@@ -3486,18 +3512,18 @@ fn main() -&gt; TkResult&lt;()&gt; {
         menu.add_command( -label(i) )?;
     }
 
-    tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
-            move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
-                Ok( tk.popup( menu, x, y, None )? )
-            }
+    let handler = tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
+        move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
+            Ok( tk.popup( menu, x, y, None )? )
+        }
     );
 
     use event::*;
     if tk.windowing_system()? == TkWindowingSystem::Aqua {
-        root.bind( button_press_2(), &quot;handler&quot; )?;
-        root.bind( control().button_press_1(), &quot;handler&quot; )?;
+        root.bind( button_press_2(), &amp;*handler )?;
+        root.bind( control().button_press_1(), &amp;*handler )?;
     } else {
-        root.bind( button_press_3(), &quot;handler&quot; )?;
+        root.bind( button_press_3(), &amp;*handler )?;
     }
 
     Ok( main_loop() )
@@ -6325,6 +6351,22 @@ the C code level in Tk's C library and via the Tk scripts found in Tk's
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
