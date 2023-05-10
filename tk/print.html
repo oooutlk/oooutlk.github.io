@@ -5561,8 +5561,8 @@ modifying the <code>open</code> item configuration option.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>tree.item_configure( &quot;widgets&quot;, -open(&quot;true&quot;) )?;
-let is_open = tree.item_cget( &quot;widgets&quot;, open )?;
+</span>tree.set_item( &quot;widgets&quot;, -open(&quot;true&quot;) )?;
+let is_open = tree.item( &quot;widgets&quot;, open )?;
 <span class="boring">}
 </span></code></pre></pre>
 <h2 id="run-example-21"><a class="header" href="#run-example-21">Run Example</a></h2>
@@ -5587,8 +5587,8 @@ a script to invoke when the item is clicked (e.g., to sort the tree).</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>tree.column_configure( &quot;size&quot;, -width(100) -anchor(&quot;center&quot;) )?;
-tree.heading_configure( &quot;size&quot;, -text(&quot;Size&quot;) )?;
+</span>tree.set_column( &quot;size&quot;, -width(100) -anchor(&quot;center&quot;) )?;
+tree.set_heading( &quot;size&quot;, -text(&quot;Size&quot;) )?;
 <span class="boring">}
 </span></code></pre></pre>
 <p>What to display in each column for each item can be specified individually by
@@ -6351,22 +6351,6 @@ the C code level in Tk's C library and via the Tk scripts found in Tk's
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

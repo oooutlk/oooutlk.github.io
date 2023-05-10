@@ -162,8 +162,8 @@ a script to invoke when the item is clicked (e.g., to sort the tree).</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>tree.column_configure( &quot;size&quot;, -width(100) -anchor(&quot;center&quot;) )?;
-tree.heading_configure( &quot;size&quot;, -text(&quot;Size&quot;) )?;
+</span>tree.set_column( &quot;size&quot;, -width(100) -anchor(&quot;center&quot;) )?;
+tree.set_heading( &quot;size&quot;, -text(&quot;Size&quot;) )?;
 <span class="boring">}
 </span></code></pre></pre>
 <p>What to display in each column for each item can be specified individually by
@@ -214,22 +214,6 @@ tree.insert( &quot;&quot;, Index::End,
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
