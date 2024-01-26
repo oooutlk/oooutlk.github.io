@@ -162,7 +162,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let root = tk.root();
 
     let p = root.add_ttk_panedwindow( -orient(&quot;vertical&quot;) )?.pack(())?;
-    
+
     // two panes, each of which would get widgets gridded into it:
     let f1 = p.add_ttk_labelframe( -text(&quot;Pane1&quot;) -width(100) -height(100) )?;
     let f2 = p.add_ttk_labelframe( -text(&quot;Pane2&quot;) -width(100) -height(100) )?;

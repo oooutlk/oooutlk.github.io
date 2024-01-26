@@ -231,7 +231,7 @@ is chosen; if the procedure is not defined, the menu item will be disabled.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>tclosure!( tk, cmd: &quot;tk::mac::ShowPreferences&quot;, move || -&gt; TkResult&lt;()&gt; {
+</span>tclosure!( tk, cmd: &quot;tk::mac::ShowPreferences&quot;, || -&gt; TkResult&lt;()&gt; {
     // show preferences
     Ok(())
 });
@@ -266,7 +266,7 @@ application help item.</p>
 </span><span class="boring">fn main() {
 </span>let menu_help = menubar.add_menu( &quot;help&quot; )?;
 menubar.add_cascade( -menu(menu_help) -label(&quot;Help&quot;) )?;
-tclosure!( tk, cmd: &quot;::tk::mac::ShowHelp&quot;, move || -&gt; TkResult&lt;()&gt; {
+tclosure!( tk, cmd: &quot;::tk::mac::ShowHelp&quot;, || -&gt; TkResult&lt;()&gt; {
     // show help
     Ok(())
 });

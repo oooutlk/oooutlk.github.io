@@ -156,14 +156,14 @@ is typically much larger than what can be shown in the available screen space.</
     .add_ttk_scrollbar( &quot;s&quot;
         -orient( &quot;vertical&quot; )
         -command( tclosure!( tk,
-            move |..| -&gt; TkResult&lt;(c_double, c_double)&gt; {
+            |..| -&gt; TkResult&lt;(c_double, c_double)&gt; {
                 Ok( l.yview()? )
             }
         ))
     )?;
 
 l.configure( -yscrollcommand( tclosure!( tk,
-    move |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; {
+    |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; {
         Ok( s.set( first, last )? )
     }
 )))?;
@@ -173,7 +173,7 @@ l.configure( -yscrollcommand( tclosure!( tk,
 widget (e.g., a listbox), but are a separate widget altogether. Instead,
 scrollbars communicate with the scrolled widget by calling methods on the
 scrolled widget; as it turns out, the scrolled widget also needs to call methods
-on the scrollbar. </p>
+on the scrollbar.</p>
 <blockquote>
 <p>If you're using a recent Linux distribution, you've probably noticed that the
 scrollbars you see in many applications have changed to look more like what
@@ -228,11 +228,11 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let s = root.add_ttk_scrollbar( &quot;s&quot;
             -orient(&quot;vertical&quot;)
             -command( tclosure!( tk,
-                move |..| -&gt; TkResult&lt;(c_double, c_double)&gt; { Ok( l.yview()? )})))?
+                |..| -&gt; TkResult&lt;()&gt; { Ok( l.yview_( tcl_va_args!() )? )})))?
         .grid( -column(1) -row(0) -sticky(&quot;ns&quot;) )?;
 
     l.configure( -yscrollcommand( tclosure!( tk,
-        move |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; { Ok( s.set( first, last )? )})))?;
+        |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; { Ok( s.set( first, last )? )})))?;
 
     root.add_ttk_label( &quot;stat&quot; -text(&quot;Status message here&quot;) -anchor(&quot;w&quot;) )?
         .grid( -column(0) -columnspan(2) -row(1) -sticky(&quot;we&quot;) )?;

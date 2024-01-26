@@ -192,21 +192,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     let l = tk.root().add_ttk_label( &quot;l&quot; -text(&quot;Starting...&quot;) )?.grid(())?;
 
-    l.bind( event::enter(), tclosure!( tk, move || l.configure( -text(&quot;Moved mouse inside&quot;) )))?;
+    l.bind( event::enter(), tclosure!( tk, || l.configure( -text(&quot;Moved mouse inside&quot;) )))?;
 
-    l.bind( event::leave(), tclosure!( tk, move || l.configure( -text(&quot;Moved mouse outside&quot;) )))?;
+    l.bind( event::leave(), tclosure!( tk, || l.configure( -text(&quot;Moved mouse outside&quot;) )))?;
 
-    l.bind( event::button_press_1(), tclosure!( tk, move || l.configure( -text(&quot;Clicked left mouse button&quot;) )))?;
+    l.bind( event::button_press_1(), tclosure!( tk, || l.configure( -text(&quot;Clicked left mouse button&quot;) )))?;
 
-    l.bind( event::button_press_3(), tclosure!( tk, move || l.configure( -text(&quot;Clicked right mouse button&quot;) )))?;
+    l.bind( event::button_press_3(), tclosure!( tk, || l.configure( -text(&quot;Clicked right mouse button&quot;) )))?;
 
-    l.bind( event::double().button_press_1(), tclosure!( tk, move || l.configure( -text(&quot;Double clicked&quot;) )))?;
+    l.bind( event::double().button_press_1(), tclosure!( tk, || l.configure( -text(&quot;Double clicked&quot;) )))?;
 
-    l.bind( event::button_3().motion(), tclosure!( tk, args: &quot;%x %y hello&quot;,
-        move |x: i32, y: i32, _z: Obj| -&gt; TkResult&lt;()&gt; {
-            Ok( l.configure( -text( format!( &quot;right button drag to {} {}&quot;, x, y )))? )
-        }
-    ))?;
+    l.bind( event::button_3().motion(), tclosure!( tk, |evt_rootx, evt_rooty| -&gt; TkResult&lt;()&gt; {
+        Ok( l.configure( -text( format!( &quot;right button drag to {evt_rootx} {evt_rooty}&quot; )))? )
+    }))?;
 
     Ok( main_loop() )
 }

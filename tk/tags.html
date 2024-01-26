@@ -200,7 +200,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     assert_eq!(
         items.get_elements()?.map( |item| item.get_string() ).collect::&lt;Vec&lt;_&gt;&gt;(),
         vec![ &quot;1&quot;.to_owned(), &quot;2&quot;.to_owned() ]);
- 
+
     Ok( main_loop() )
 }
 </code></pre></pre>
@@ -236,15 +236,15 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
             set_color( &amp;tk, &amp;canvas, &amp;color )?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], -fill(color) )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], -fill(color) )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -253,19 +253,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
         -fill(&quot;red&quot;) -tags(&quot;palette palettered&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0,
         -fill(&quot;blue&quot;) -tags(&quot;palette paletteblue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0,
         -fill(&quot;black&quot;) -tags(&quot;palette paletteblack paletteSelected&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     set_color( &amp;tk, &amp;canvas, &amp;Obj::from(&quot;black&quot;) )?;
     canvas.itemconfigure( item_tag( &quot;palette&quot; ), -width(5) )?;
@@ -284,8 +284,8 @@ prominent. When the mouse button is released, we'll return the line to normal.</
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-    move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+</span>Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+    |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
         // ...
         canvas.create_line( &amp;[ (last_x,last_y), (x,y) ],
             -fill(color) -width(5) -tags(&quot;currentline&quot;) )?;
@@ -300,7 +300,7 @@ prominent. When the mouse button is released, we'll return the line to normal.</
 Widget::bind(
     &amp;canvas,
     event::button_1().button_pelease(),
-    tclosure!( tk, move || -&gt;TkResult&lt;()&gt; {
+    tclosure!( tk, || -&gt;TkResult&lt;()&gt; {
         Ok( canvas.itemconfigure( item_tag( &quot;currentline&quot; ), -width(1) )? )
     })
 )?;

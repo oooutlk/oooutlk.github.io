@@ -217,9 +217,9 @@ callback change the font on a label.</p>
 </span>let l = root
     .add_ttk_label( &quot;l&quot; -text(&quot;Hello World&quot;) -font(&quot;helvetica 24&quot;) )?
     .grid( -padx(10) -pady(10) )?;
-tclosure!( tk, cmd:&quot;font_changed&quot;,
-    move |some_font:Obj| -&gt; TkResult&lt;()&gt; { Ok( l.configure( -font(some_font) )? )});
-tk.fontchooser_configure( -font(&quot;helvetica 24&quot;) -command(&quot;font_changed&quot;) )?;
+let font_changed = tclosure!( tk,
+    |some_font:Obj| -&gt; TkResult&lt;()&gt; { Ok( l.configure( -font(some_font) )? )});
+tk.fontchooser_configure( -font(&quot;helvetica 24&quot;) -command(font_changed) )?;
 <span class="boring">}
 </span></code></pre></pre>
 <blockquote>
@@ -263,11 +263,11 @@ different fonts, when one of them gains focus, it should update the font
 chooser with its current font. This also means that a callback from the font
 dialog may apply to a different text widget than the one you initially called
 <code>show</code> from! Finally, be aware that the font chooser itself may gain the
-keyboard focus on some platforms. </p>
+keyboard focus on some platforms.</p>
 </blockquote>
 <blockquote>
 <p>As of Tk 8.6.10, there are a few bugs in the font chooser on various
-platforms. Here's a quick rundown including workarounds: </p>
+platforms. Here's a quick rundown including workarounds:</p>
 </blockquote>
 <blockquote>
 <ul>
@@ -304,7 +304,7 @@ later</li>
 <li>on Windows, a font change virtual event is not generated if you change the
 <code>font</code> configuration option in your code, though it is on macOS and X11 ⇒ take
 any necessary actions when you change the font in your code rather than in a
-virtual event handler </li>
+virtual event handler</li>
 </ul>
 </blockquote>
 <blockquote>
@@ -346,7 +346,7 @@ of a user's action to the caller. The exact return value will depend on the
 <code>yesno</code>:              ⇒ <code>yes</code> or <code>no</code>
 <code>yesnocancel</code>:        ⇒ <code>yes</code>, <code>no</code> or <code>cancel</code>
 <code>retrycancel</code>:        ⇒ <code>retry</code> or <code>cancel</code>
-<code>abortretryignore</code>:   ⇒ <code>abort</code>, <code>retry</code> or <code>ignore</code> </p>
+<code>abortretryignore</code>:   ⇒ <code>abort</code>, <code>retry</code> or <code>ignore</code></p>
 <p>The full list of possible options is shown here:</p>
 <p><code>type_</code>:    As described above.
 <code>message</code>:  The main message displayed inside the alert.

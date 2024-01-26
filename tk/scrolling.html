@@ -201,11 +201,11 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     Widget::bind( &amp;canvas, event::button_press_1(),
         &quot;set lastx [.canvas canvasx %x]; set lasty [.canvas canvasy %y]&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
-            let x = canvas.canvasx( x, None )?;
-            let y = canvas.canvasy( y, None )?;
-        
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
+            let x = canvas.canvasx( evt_x, None )?;
+            let y = canvas.canvasy( evt_y, None )?;
+
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
@@ -219,7 +219,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
                     item_tag( &amp;format!( &quot;palette{}&quot;, color.clone().get_string() )).into() ))?;
             canvas.itemconfigure( item_tag( &quot;paletteSelected&quot; ), -outline(&quot;#999999&quot;) )?;
 
-            canvas.create_line( vec![ (last_x,last_y), (x,y) ],
+            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ],
                 -fill(color) -width(5) -tags(&quot;currentline&quot;) )?;
 
             tk.set( &quot;lastx&quot;, x );
@@ -230,8 +230,8 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     Widget::bind(
         &amp;canvas,
-        event::button_1().button_pelease(),
-        tclosure!( tk, move || -&gt;TkResult&lt;()&gt; {
+        event::button_1().button_release(),
+        tclosure!( tk, || -&gt;TkResult&lt;()&gt; {
             Ok( canvas.itemconfigure( item_tag( &quot;currentline&quot; ), -width(1) )? )
         })
     )?;
@@ -240,19 +240,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
         -fill(&quot;red&quot;) -tags(&quot;palette palettered&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0,
         -fill(&quot;blue&quot;) -tags(&quot;palette paletteblue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0,
         -fill(&quot;black&quot;) -tags(&quot;palette paletteblack paletteSelected&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     tk.set( &quot;color&quot;, &quot;black&quot; );
     canvas.itemconfigure( item_tag( &quot;palette&quot; ), -width(5) )?;

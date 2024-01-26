@@ -336,11 +336,11 @@ you can raise and lower them relative to each other:</p>
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let little = root.add_ttk_label( &quot;little&quot; -text(&quot;Little&quot;) )?
-    .grid( -column(0) -row(0) )?; 
+    .grid( -column(0) -row(0) )?;
 root.add_ttk_label( &quot;bigger&quot; -text(&quot;Much Bigger Label&quot;) )?
     .grid( -column(0) -row(0) )?;
 tk.after( 2000, (tclosure!( tk,
-    move || -&gt; TkResult&lt;()&gt; { Ok( little.raise()? )}),))?;
+    || -&gt; TkResult&lt;()&gt; { Ok( little.raise()? )}),))?;
 <span class="boring">}
 </span></code></pre></pre>
 <h2 id="screen-information"><a class="header" href="#screen-information">Screen Information</a></h2>

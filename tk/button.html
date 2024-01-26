@@ -190,7 +190,7 @@ event binding on our default button, doesn't it?</p>
 
 parent.bind(
     event::key_press( TkKey::Return ),
-    tclosure!( tk, move || -&gt; InterpResult&lt;Obj&gt; { button.invoke() })
+    tclosure!( tk, || -&gt; InterpResult&lt;Obj&gt; { button.invoke() })
 )?;
 <span class="boring">}
 </span></code></pre></pre>

@@ -159,7 +159,7 @@ The only difference is you specify the canvas item this binding applies to.</p>
 </span>canvas.bind(
     id.into(),
     event::button_press_1(),
-    tclosure!( tk, move || l.configure( -text(&quot;...&quot;) )))?;
+    tclosure!( tk, || l.configure( -text(&quot;...&quot;) )))?;
 <span class="boring">}
 </span></code></pre></pre>
 <p>Let's add some code to our sketchpad example to allow changing the drawing
@@ -183,14 +183,14 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], -fill(color) )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], -fill(color) )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -198,17 +198,17 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let id = canvas.create_rectangle( 10.0, 10.0, 30.0, 30.0, -fill(&quot;red&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0, -fill(&quot;blue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0, -fill(&quot;black&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     tk.set( &quot;color&quot;, &quot;black&quot; );
     Ok( main_loop() )

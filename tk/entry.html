@@ -162,7 +162,7 @@ shorter entry for a zip or postal code.</p>
 <h2 id="entry-contents"><a class="header" href="#entry-contents">Entry Contents</a></h2>
 <p>We've seen how checkbutton and radiobutton widgets have a value associated with
 them. Entries do as well, and that value is usually accessed through a linked
-variable specified by the <code>textvariable</code> configuration option. </p>
+variable specified by the <code>textvariable</code> configuration option.</p>
 <blockquote>
 <p>Unlike the various buttons, entries don't have a text or image beside them to
 identify them. Use a separate label widget for that.</p>
@@ -228,10 +228,10 @@ the <code>validate</code> configuration option.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let validate_cmd = tclfn!( &amp;tk, args: &quot;%P&quot;,
-    fn check_num( new_val: String ) -&gt; TclResult&lt;bool&gt; {
-       Ok( new_val.len() &lt;= 5 &amp;&amp;
-           new_val.chars().filter( |&amp;ch| ch &gt;= '0' &amp;&amp; ch &lt;= '9' ).count() &lt;= 5 )
+</span>let validate_cmd = tclfn!( &amp;tk,
+    fn check_num( vldt_new: String ) -&gt; TclResult&lt;bool&gt; {
+       Ok( vldt_new.len() &lt;= 5 &amp;&amp;
+           vldt_new.chars().filter( |&amp;ch| ch &gt;= '0' &amp;&amp; ch &lt;= '9' ).count() &lt;= 5 )
     }
 );
 
@@ -281,8 +281,8 @@ let f_btn = f.add_ttk_button( &quot;btn&quot; -text(&quot;Process&quot;) )?
 
 f_btn.set_state( TtkState::Disabled )?;
 
-let check_zip_cmd = tclosure!( tk, cmd: &quot;check_zip&quot;, args: &quot;%P %V&quot;,
-    move |new_val: String, op: String| -&gt; TkResult&lt;bool&gt; {
+let check_zip_cmd = tclosure!( tk, cmd: &quot;check_zip&quot;,
+    |vldt_new, vldt_op| -&gt; TkResult&lt;bool&gt; {
         let interp = tcl_interp!();
         interp.set( &quot;errmsg&quot;, &quot;&quot; );
 

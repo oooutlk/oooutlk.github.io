@@ -193,13 +193,13 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], () )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], () )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -337,7 +337,7 @@ width, etc. There are several other things you can do with items.</p>
 <p>To change an item's size and position, you can use the <code>coords</code> method. You
 supply new coordinates for the item, specified the same way as when you first
 created it. Calling this method without a new set of coordinates will return the
-current coordinates of the item. You can use the <code>move</code> method to offset one or
+current coordinates of the item. You can use the <code>move_</code> method to offset one or
 more items horizontally or vertically from their current position.</p>
 <p>All items are ordered from top to bottom in what's called the stacking order. If
 an item later in the stacking order overlaps an item below it, the first item

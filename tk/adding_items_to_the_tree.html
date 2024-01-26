@@ -175,19 +175,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     // Inserted at the root, program chooses id:
     tree.insert( &quot;&quot;, Index::End, &quot;widgets&quot; -text(&quot;Widget Tour&quot;) )?;
-     
+
     // Same thing, but inserted as first child:
     tree.insert( &quot;&quot;, 0, &quot;gallery&quot; -text(&quot;Applications&quot;) )?;
-    
+
     // Treeview chooses the id:
     let id = tree
         .insert( &quot;&quot;, Index::End, -text(&quot;Tutorial&quot;) )?
         .unwrap();
-    
+
     // Inserted underneath an existing node:
     tree.insert( &quot;widgets&quot;, Index::End, -text(&quot;Canvas&quot;) )?;
     tree.insert( &amp;id, Index::End, -text(&quot;Tree&quot;) )?;
- 
+
     Ok( main_loop() )
 }
 </code></pre></pre>

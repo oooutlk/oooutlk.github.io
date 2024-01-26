@@ -172,7 +172,6 @@ via the <code>post</code> method. Here's an example of the whole process, using 
 menu on the application's main window.</p>
 <pre><pre class="playground"><code class="language-rust no_run">// `cargo run --example contextual_menus`
 
-use std::ffi::c_int;
 use tcl::*;
 use tk::*;
 use tk::cmd::*;
@@ -186,9 +185,9 @@ fn main() -&gt; TkResult&lt;()&gt; {
         menu.add_command( -label(i) )?;
     }
 
-    let handler = tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
-        move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
-            Ok( tk.popup( menu, x, y, None )? )
+    let handler = tclosure!( tk,
+        |evt_rootx, evt_rooty| -&gt; TkResult&lt;()&gt; {
+            Ok( tk.popup( menu, evt_rootx, evt_rooty, None )? )
         }
     );
 

@@ -507,14 +507,14 @@ let m = root.add_menu(())?;
 let m_edit = m.add_menu( &quot;edit&quot; )?;
 m.add_cascade( -menu(m_edit) -label(&quot;Edit&quot;) )?;
 m_edit.add_command( -label(&quot;Paste&quot;)
-    -command( tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    -command( tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( tk.focus()?.event_generate( event::virtual_event(&quot;Paste&quot;), () )? )})))?;
 m_edit.add_command( -label(&quot;Find...&quot;)
-    -command( tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    -command( tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( root.event_generate( event::virtual_event(&quot;OpenFindDialog&quot;), () )? )})))?;
 root.configure( -menu(m) )?;
 
-root.bind( event::virtual_event(&quot;OpenFindDialog&quot;), tclosure!( tk, move || -&gt; TkResult&lt;String&gt; {
+root.bind( event::virtual_event(&quot;OpenFindDialog&quot;), tclosure!( tk, || -&gt; TkResult&lt;String&gt; {
     Ok( tk.message_box( -message(&quot;I hope you find what you're looking for!&quot;) )? )
 }))?;
 <span class="boring">}

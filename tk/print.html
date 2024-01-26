@@ -679,21 +679,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     let l = tk.root().add_ttk_label( &quot;l&quot; -text(&quot;Starting...&quot;) )?.grid(())?;
 
-    l.bind( event::enter(), tclosure!( tk, move || l.configure( -text(&quot;Moved mouse inside&quot;) )))?;
+    l.bind( event::enter(), tclosure!( tk, || l.configure( -text(&quot;Moved mouse inside&quot;) )))?;
 
-    l.bind( event::leave(), tclosure!( tk, move || l.configure( -text(&quot;Moved mouse outside&quot;) )))?;
+    l.bind( event::leave(), tclosure!( tk, || l.configure( -text(&quot;Moved mouse outside&quot;) )))?;
 
-    l.bind( event::button_press_1(), tclosure!( tk, move || l.configure( -text(&quot;Clicked left mouse button&quot;) )))?;
+    l.bind( event::button_press_1(), tclosure!( tk, || l.configure( -text(&quot;Clicked left mouse button&quot;) )))?;
 
-    l.bind( event::button_press_3(), tclosure!( tk, move || l.configure( -text(&quot;Clicked right mouse button&quot;) )))?;
+    l.bind( event::button_press_3(), tclosure!( tk, || l.configure( -text(&quot;Clicked right mouse button&quot;) )))?;
 
-    l.bind( event::double().button_press_1(), tclosure!( tk, move || l.configure( -text(&quot;Double clicked&quot;) )))?;
+    l.bind( event::double().button_press_1(), tclosure!( tk, || l.configure( -text(&quot;Double clicked&quot;) )))?;
 
-    l.bind( event::button_3().motion(), tclosure!( tk, args: &quot;%x %y hello&quot;,
-        move |x: i32, y: i32, _z: Obj| -&gt; TkResult&lt;()&gt; {
-            Ok( l.configure( -text( format!( &quot;right button drag to {} {}&quot;, x, y )))? )
-        }
-    ))?;
+    l.bind( event::button_3().motion(), tclosure!( tk, |evt_rootx, evt_rooty| -&gt; TkResult&lt;()&gt; {
+        Ok( l.configure( -text( format!( &quot;right button drag to {evt_rootx} {evt_rooty}&quot; )))? )
+    }))?;
 
     Ok( main_loop() )
 }
@@ -1034,7 +1032,7 @@ using <code>grid</code>, you may need to adjust the <code>sticky</code> options.
 can help to change the background color of each widget, so you know exactly
 where each is positioned. This is a good example of those &quot;one-off&quot; cases we
 just mentioned where you might use configuration options rather than styles to
-modify appearance. </p>
+modify appearance.</p>
 </blockquote>
 <h2 id="multi-line-labels"><a class="header" href="#multi-line-labels">Multi-line Labels</a></h2>
 <p>Labels can display more than one line of text. To do so, embed carriage returns
@@ -1098,7 +1096,7 @@ event binding on our default button, doesn't it?</p>
 
 parent.bind(
     event::key_press( TkKey::Return ),
-    tclosure!( tk, move || -&gt; InterpResult&lt;Obj&gt; { button.invoke() })
+    tclosure!( tk, || -&gt; InterpResult&lt;Obj&gt; { button.invoke() })
 )?;
 <span class="boring">}
 </span></code></pre></pre>
@@ -1160,7 +1158,7 @@ control the display of the label (next to the checkbox itself). Similarly, the
 <code>command</code> option lets you specify a command to be called every time a user
 toggles the checkbutton; and the <code>invoke</code> method will also execute the same
 command. The <code>state</code> and <code>instate</code> methods allow you to manipulate the
-<code>disabled</code> state flag to enable or disable the checkbutton. </p>
+<code>disabled</code> state flag to enable or disable the checkbutton.</p>
 <h2 id="widget-value"><a class="header" href="#widget-value">Widget Value</a></h2>
 <p>Unlike regular buttons, checkbuttons also hold a value. We've seen before how
 the <code>textvariable</code> option can link the label of a widget to a variable in your
@@ -1235,7 +1233,7 @@ shorter entry for a zip or postal code.</p>
 <h2 id="entry-contents"><a class="header" href="#entry-contents">Entry Contents</a></h2>
 <p>We've seen how checkbutton and radiobutton widgets have a value associated with
 them. Entries do as well, and that value is usually accessed through a linked
-variable specified by the <code>textvariable</code> configuration option. </p>
+variable specified by the <code>textvariable</code> configuration option.</p>
 <blockquote>
 <p>Unlike the various buttons, entries don't have a text or image beside them to
 identify them. Use a separate label widget for that.</p>
@@ -1301,10 +1299,10 @@ the <code>validate</code> configuration option.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let validate_cmd = tclfn!( &amp;tk, args: &quot;%P&quot;,
-    fn check_num( new_val: String ) -&gt; TclResult&lt;bool&gt; {
-       Ok( new_val.len() &lt;= 5 &amp;&amp;
-           new_val.chars().filter( |&amp;ch| ch &gt;= '0' &amp;&amp; ch &lt;= '9' ).count() &lt;= 5 )
+</span>let validate_cmd = tclfn!( &amp;tk,
+    fn check_num( vldt_new: String ) -&gt; TclResult&lt;bool&gt; {
+       Ok( vldt_new.len() &lt;= 5 &amp;&amp;
+           vldt_new.chars().filter( |&amp;ch| ch &gt;= '0' &amp;&amp; ch &lt;= '9' ).count() &lt;= 5 )
     }
 );
 
@@ -1354,8 +1352,8 @@ let f_btn = f.add_ttk_button( &quot;btn&quot; -text(&quot;Process&quot;) )?
 
 f_btn.set_state( TtkState::Disabled )?;
 
-let check_zip_cmd = tclosure!( tk, cmd: &quot;check_zip&quot;, args: &quot;%P %V&quot;,
-    move |new_val: String, op: String| -&gt; TkResult&lt;bool&gt; {
+let check_zip_cmd = tclosure!( tk, cmd: &quot;check_zip&quot;,
+    |vldt_new, vldt_op| -&gt; TkResult&lt;bool&gt; {
         let interp = tcl_interp!();
         interp.set( &quot;errmsg&quot;, &quot;&quot; );
 
@@ -1616,7 +1614,7 @@ boundaries. The bottom left label in the figure above uses the default anchor
 <p>If you're having trouble getting things to line up the way you want them to,
 first make sure you know how large the widget is. As we discussed with the
 <code>label</code> widget in the previous chapter, changing the widget's background or
-border can help. </p>
+border can help.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="handling-resize"><a class="header" href="#handling-resize">Handling Resize</a></h1>
 <p>If you've tried to resize the example, you'll notice that nothing moves at all,
@@ -1641,7 +1639,7 @@ the same weight, they'll expand at the same rate. In our example, we'll give the
 three leftmost columns (holding the checkbuttons) a weight of 3, and the two
 rightmost columns a weight of 1. For every one pixel the right columns grow, the
 left columns will grow by three pixels. So as the window grows larger, most of
-the extra space will go to the left side. </p>
+the extra space will go to the left side.</p>
 <table><thead><tr><th style="text-align: center">Resizing the window after adding weights</th></tr></thead><tbody>
 <tr><td style="text-align: center"><img src="./images/gridresize.png" alt="Resizing the window after adding weights." /></td></tr>
 </tbody></table>
@@ -1910,7 +1908,7 @@ or more items from the list.</p>
 <p>Use the <code>get( &amp;self, index: impl Into&lt;Index&gt; )</code> method to return the contents of
 a single item at the given position, or use the
 <code>get_range( &amp;self, range: impl Into&lt;TkRange&lt;Index&gt;&gt; )</code> method to get a list of
-the items in the <code>range</code>. </p>
+the items in the <code>range</code>.</p>
 <p>The <code>size</code> method returns the number of items in the list.</p>
 <blockquote>
 <p>The reason there is a hard way at all is because the <code>listvariable</code> option was
@@ -1967,13 +1965,13 @@ currently selected item.</p>
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>lbox.bind( event::virtual_event( &quot;ListboxSelect&quot; ),
-    tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( update_details( lbox.curselection()? ))
     }
 ))?;
 
 lbox.bind( event::double().button_press_1(),
-    tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( invoke_action( lbox.curselection()? ))
     }
 ))?;
@@ -2096,55 +2094,6 @@ fn main() -&gt; TkResult&lt;()&gt; {
     // The listbox is the only widget we'll need to refer to directly
     // later in our program, so for convenience we'll assign it to a variable.
     let lbox = c.add_listbox( &quot;countries&quot; -listvariable(&quot;countrynames&quot;) -height(5) )?;
-    c.add_ttk_label( &quot;lbl&quot; -text(&quot;Send to country's leader:&quot;) )?;
-    c.add_ttk_radiobutton( &quot;g1&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;card&quot;      )? ) -variable(&quot;gift&quot;) -value(&quot;card&quot;) )?;
-    c.add_ttk_radiobutton( &quot;g2&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;flowers&quot;   )? ) -variable(&quot;gift&quot;) -value(&quot;flowers&quot;) )?;
-    c.add_ttk_radiobutton( &quot;g3&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;nastygram&quot; )? ) -variable(&quot;gift&quot;) -value(&quot;nastygram&quot;) )?;
-    c.add_ttk_button( &quot;send&quot;    -text(&quot;Send Gift&quot;) -command(&quot;send_gift&quot;) -default_(&quot;active&quot;) )?;
-    c.add_ttk_label(  &quot;sentlbl&quot; -textvariable(&quot;sentmsg&quot;)   -anchor(&quot;center&quot;) )?;
-    c.add_ttk_label(  &quot;status&quot;  -textvariable(&quot;statusmsg&quot;) -anchor(&quot;w&quot;) )?;
-
-    // Grid all the widgets
-    tk.grid( &quot;.c.countries&quot; -column(0) -row(0) -rowspan(6) -sticky(&quot;nsew&quot;) )?;
-    tk.grid( &quot;.c.lbl&quot;       -column(1) -row(0) -padx(10) -pady(5) )?;
-    tk.grid( &quot;.c.g1&quot;        -column(1) -row(1) -sticky(&quot;w&quot;) -padx(20) )?;
-    tk.grid( &quot;.c.g2&quot;        -column(1) -row(2) -sticky(&quot;w&quot;) -padx(20) )?;
-    tk.grid( &quot;.c.g3&quot;        -column(1) -row(3) -sticky(&quot;w&quot;) -padx(20) )?;
-    tk.grid( &quot;.c.send&quot;      -column(2) -row(4) -sticky(&quot;e&quot;) )?;
-    tk.grid( &quot;.c.sentlbl&quot;   -column(1) -row(5) -columnspan(2) -sticky(&quot;n&quot;) -pady(5) -padx(5) )?;
-    tk.grid( &quot;.c.status&quot;    -column(0) -row(6) -columnspan(2) -sticky(&quot;we&quot;) )?;
-    c.grid_columnconfigure( 0, -weight(1) )?;
-    c.grid_rowconfigure(    5, -weight(1) )?;
-
-    // Set event bindings for when the selection in the listbox changes,
-    // when the user double clicks the list, and when they hit the Return key
-    lbox.bind( event::virtual_event( &quot;ListboxSelect&quot; ), &quot;show_population&quot; )?;
-    lbox.bind( event::double().button_press_1(), &quot;send_gift&quot; )?;
-    root.bind( event::key_press( TkKey::Return ), &quot;send_gift&quot; )?;
-
-    // Called when the selection in the listbox changes; figure out
-    // which country is currently selected, and then lookup its country
-    // code, and from that, its population.  Update the status message
-    // with the new population.  As well, clear the message about the
-    // gift being sent, so it doesn't stick around after we start doing
-    // other things.
-    tclosure!( tk, cmd: &quot;show_population&quot;, move || -&gt; TkResult&lt;()&gt; {
-        let interp = tcl_interp!();
-        let idx = lbox.curselection()?;
-        if idx.len() == 1 {
-            let idx = idx[0];
-            let code = interp.get( &quot;countrycodes&quot; )?.list_index( idx )?
-                .map( |obj| obj.get_string() ).unwrap_or_default();
-            let name = interp.get( &quot;countrynames&quot; )?.list_index( idx )?
-                .map( |obj| obj.get_string() ).unwrap_or_default();
-            let popn = interp.get(&quot;populations&quot;)?.dict_get( code.clone() )?
-                .map( |obj| obj.get_string() ).unwrap_or_default();
-            interp.set( &quot;statusmsg&quot;,
-                format!( &quot;The population of {}({}) is {}&quot;, name, code, popn ));
-        }
-        interp.set( &quot;sentmsg&quot;, &quot;&quot; );
-        Ok(())
-    });
 
     // Called when the user double clicks an item in the listbox, presses
     // the &quot;Send Gift&quot; button, or presses the Return key.  In case the selected
@@ -2152,7 +2101,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     //
     // Figure out which country is selected, which gift is selected with the
     // radiobuttons, &quot;send the gift&quot;, and provide feedback that it was sent.
-    tclosure!( tk, cmd: &quot;send_gift&quot;, move || -&gt; TkResult&lt;()&gt; {
+    let send_gift = tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         let interp = tcl_interp!();
         let idx = lbox.curselection()?;
         if idx.len() == 1 {
@@ -2172,6 +2121,56 @@ fn main() -&gt; TkResult&lt;()&gt; {
         Ok(())
     });
 
+    c.add_ttk_label( &quot;lbl&quot; -text(&quot;Send to country's leader:&quot;) )?;
+    c.add_ttk_radiobutton( &quot;g1&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;card&quot;      )? ) -variable(&quot;gift&quot;) -value(&quot;card&quot;) )?;
+    c.add_ttk_radiobutton( &quot;g2&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;flowers&quot;   )? ) -variable(&quot;gift&quot;) -value(&quot;flowers&quot;) )?;
+    c.add_ttk_radiobutton( &quot;g3&quot; -text( tk.arr_get( &quot;gifts&quot;, &quot;nastygram&quot; )? ) -variable(&quot;gift&quot;) -value(&quot;nastygram&quot;) )?;
+    c.add_ttk_button( &quot;send&quot;    -text(&quot;Send Gift&quot;) -command(&amp;*send_gift) -default_(&quot;active&quot;) )?;
+    c.add_ttk_label(  &quot;sentlbl&quot; -textvariable(&quot;sentmsg&quot;)   -anchor(&quot;center&quot;) )?;
+    c.add_ttk_label(  &quot;status&quot;  -textvariable(&quot;statusmsg&quot;) -anchor(&quot;w&quot;) )?;
+
+    // Grid all the widgets
+    tk.grid( &quot;.c.countries&quot; -column(0) -row(0) -rowspan(6) -sticky(&quot;nsew&quot;) )?;
+    tk.grid( &quot;.c.lbl&quot;       -column(1) -row(0) -padx(10) -pady(5) )?;
+    tk.grid( &quot;.c.g1&quot;        -column(1) -row(1) -sticky(&quot;w&quot;) -padx(20) )?;
+    tk.grid( &quot;.c.g2&quot;        -column(1) -row(2) -sticky(&quot;w&quot;) -padx(20) )?;
+    tk.grid( &quot;.c.g3&quot;        -column(1) -row(3) -sticky(&quot;w&quot;) -padx(20) )?;
+    tk.grid( &quot;.c.send&quot;      -column(2) -row(4) -sticky(&quot;e&quot;) )?;
+    tk.grid( &quot;.c.sentlbl&quot;   -column(1) -row(5) -columnspan(2) -sticky(&quot;n&quot;) -pady(5) -padx(5) )?;
+    tk.grid( &quot;.c.status&quot;    -column(0) -row(6) -columnspan(2) -sticky(&quot;we&quot;) )?;
+    c.grid_columnconfigure( 0, -weight(1) )?;
+    c.grid_rowconfigure(    5, -weight(1) )?;
+
+    // Called when the selection in the listbox changes; figure out
+    // which country is currently selected, and then lookup its country
+    // code, and from that, its population.  Update the status message
+    // with the new population.  As well, clear the message about the
+    // gift being sent, so it doesn't stick around after we start doing
+    // other things.
+    let show_population = tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
+        let interp = tcl_interp!();
+        let idx = lbox.curselection()?;
+        if idx.len() == 1 {
+            let idx = idx[0];
+            let code = interp.get( &quot;countrycodes&quot; )?.list_index( idx )?
+                .map( |obj| obj.get_string() ).unwrap_or_default();
+            let name = interp.get( &quot;countrynames&quot; )?.list_index( idx )?
+                .map( |obj| obj.get_string() ).unwrap_or_default();
+            let popn = interp.get(&quot;populations&quot;)?.dict_get( code.clone() )?
+                .map( |obj| obj.get_string() ).unwrap_or_default();
+            interp.set( &quot;statusmsg&quot;,
+                format!( &quot;The population of {}({}) is {}&quot;, name, code, popn ));
+        }
+        interp.set( &quot;sentmsg&quot;, &quot;&quot; );
+        Ok(())
+    });
+
+    // Set event bindings for when the selection in the listbox changes,
+    // when the user double clicks the list, and when they hit the Return key
+    lbox.bind( event::virtual_event( &quot;ListboxSelect&quot; ), &amp;*show_population )?;
+    lbox.bind( event::double().button_press_1(), &amp;*send_gift )?;
+    root.bind( event::key_press( TkKey::Return ), &amp;*send_gift )?;
+
     // Colorize alternating lines of the listbox
     let len = tk.get( &quot;countrynames&quot; )?.list_length()?;
     (0..len).step_by(2).try_for_each( |i| -&gt; InterpResult&lt;()&gt; {
@@ -2186,7 +2185,20 @@ fn main() -&gt; TkResult&lt;()&gt; {
     tk.set( &quot;sentmsg&quot;, &quot;&quot; );
     tk.set( &quot;statusmsg&quot;, &quot;&quot; );
     lbox.selection_set_range( 0.. )?;
-    tk.run( &quot;show_population&quot; )?;
+    tk.run( &amp;*show_population )?;
+
+    //
+    //lbox.bind( event::virtual_event( &quot;ListboxSelect&quot; ),
+    //    tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
+    //        Ok( update_details( lbox.curselection()? ))
+    //    }
+    //))?;
+    //
+    //lbox.bind( event::double().button_press_1(),
+    //    tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
+    //        Ok( invoke_action( lbox.curselection()? ))
+    //    }
+    //))?;
 
     Ok( main_loop() )
 }
@@ -2209,14 +2221,14 @@ is typically much larger than what can be shown in the available screen space.</
     .add_ttk_scrollbar( &quot;s&quot;
         -orient( &quot;vertical&quot; )
         -command( tclosure!( tk,
-            move |..| -&gt; TkResult&lt;(c_double, c_double)&gt; {
+            |..| -&gt; TkResult&lt;(c_double, c_double)&gt; {
                 Ok( l.yview()? )
             }
         ))
     )?;
 
 l.configure( -yscrollcommand( tclosure!( tk,
-    move |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; {
+    |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; {
         Ok( s.set( first, last )? )
     }
 )))?;
@@ -2226,7 +2238,7 @@ l.configure( -yscrollcommand( tclosure!( tk,
 widget (e.g., a listbox), but are a separate widget altogether. Instead,
 scrollbars communicate with the scrolled widget by calling methods on the
 scrolled widget; as it turns out, the scrolled widget also needs to call methods
-on the scrollbar. </p>
+on the scrollbar.</p>
 <blockquote>
 <p>If you're using a recent Linux distribution, you've probably noticed that the
 scrollbars you see in many applications have changed to look more like what
@@ -2281,11 +2293,11 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let s = root.add_ttk_scrollbar( &quot;s&quot;
             -orient(&quot;vertical&quot;)
             -command( tclosure!( tk,
-                move |..| -&gt; TkResult&lt;(c_double, c_double)&gt; { Ok( l.yview()? )})))?
+                |..| -&gt; TkResult&lt;()&gt; { Ok( l.yview_( tcl_va_args!() )? )})))?
         .grid( -column(1) -row(0) -sticky(&quot;ns&quot;) )?;
 
     l.configure( -yscrollcommand( tclosure!( tk,
-        move |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; { Ok( s.set( first, last )? )})))?;
+        |first:c_double, last:c_double| -&gt; TkResult&lt;()&gt; { Ok( s.set( first, last )? )})))?;
 
     root.add_ttk_label( &quot;stat&quot; -text(&quot;Status message here&quot;) -anchor(&quot;w&quot;) )?
         .grid( -column(0) -columnspan(2) -row(1) -sticky(&quot;we&quot;) )?;
@@ -2331,7 +2343,7 @@ widgets that provide amazingly deep but easily programmed features. Text widgets
 have formed the basis for full word processors, outliners, web browsers, and
 more. We'll get into some of the advanced stuff in a later chapter. Here, we'll
 show you how to use the text widget to capture fairly simple, multi-line text
-input. </p>
+input.</p>
 </blockquote>
 <p>Text widgets are created using the <code>add_tk_text</code> method:</p>
 <pre><pre class="playground"><code class="language-rust no_run">
@@ -2360,7 +2372,7 @@ or <code>normal</code>.</p>
 <code>yscrollcommand</code> configuration options attach the text widget to horizontal
 and/or vertical scrollbars, and the <code>xview</code> and <code>yview</code> methods are called from
 scrollbars. To ensure that a given line is visible (i.e., not scrolled out of
-view), you can use the <code>see( index )</code> method. </p>
+view), you can use the <code>see( index )</code> method.</p>
 <h2 id="contents"><a class="header" href="#contents">Contents</a></h2>
 <p>Text widgets do not have a linked variable associated with them like, for
 example, entry widgets do. To retrieve the contents of the entire text widget,
@@ -2421,11 +2433,11 @@ fn main() -&gt; TkResult&lt;()&gt; {
     // label tied to the same variable as the scale, so auto-updates
     root.add_ttk_label( &quot;auto&quot; -textvariable(&quot;num&quot;) )?
         .grid( -column(0) -row(0) -sticky(&quot;we&quot;) )?;
-    
+
     // label that we'll manually update via the scale's command callback
     let manual = root.add_ttk_label( &quot;manual&quot; )?
         .grid( -column(0) -row(1) -sticky(&quot;we&quot;) )?;
-    
+
     let scale =
         root.add_ttk_scale( &quot;scale&quot;
             -orient(   &quot;horizontal&quot; )
@@ -2433,12 +2445,12 @@ fn main() -&gt; TkResult&lt;()&gt; {
             -from(     1.0          )
             -to(       100.0        )
             -variable( &quot;num&quot;        )
-            -command(  tclosure!( tk, move |val: c_double| -&gt; TkResult&lt;()&gt; {
+            -command( tclosure!( tk, |val: c_double| -&gt; TkResult&lt;()&gt; {
                 Ok( manual.configure( -text( format!( &quot;Scale at {}&quot;, val )))? )
             }))
         )?
-       .grid( -column(0) -row(2) -sticky(&quot;we&quot;) )?; 
-    
+       .grid( -column(0) -row(2) -sticky(&quot;we&quot;) )?;
+
     scale.set( 20.0 )?;
 
     Ok( main_loop() )
@@ -2479,7 +2491,7 @@ settings.</p>
 and down buttons, or by typing them directly into the entry area that displays
 the current value. If you'd like to disable the latter feature, so that only the
 up and down buttons are available, you can set the <code>TtkState::ReadOnly</code> state
-flag. </p>
+flag.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -2631,7 +2643,7 @@ models that allow for blocking code, runs the GUI and event handlers in separate
 threads from application code, etc. Attempting to shoehorn these models into Tk
 can be a recipe for frustration and lead to fragile and hacky code. If you
 respect Tk's model rather than try to fight with it, you won't run into
-problems. </p>
+problems.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="one-step-at-a-time"><a class="header" href="#one-step-at-a-time">One Step at a Time</a></h1>
 <p>If possible, the very best thing you can do is break your operation into very
@@ -2686,7 +2698,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
         Ok(())
     });
 
-    tclosure!( tk, cmd: &quot;result&quot;, move |answer: String| -&gt; TkResult&lt;()&gt; {
+    tclosure!( tk, cmd: &quot;result&quot;, |answer: String| -&gt; TkResult&lt;()&gt; {
         f_p.configure( -value(0) )?;
         f_b.configure( -text(&quot;Start!&quot;) -command(&quot;start&quot;) )?;
         f_l.configure( -text({
@@ -2699,7 +2711,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
         Ok(())
     });
 
-    tclosure!( tk, cmd: &quot;step&quot;, move |count: c_int| -&gt;TkResult&lt;()&gt; {
+    tclosure!( tk, cmd: &quot;step&quot;, |count: c_int| -&gt;TkResult&lt;()&gt; {
         let interp = tcl_interp!();
 
         f_p.configure( -value(count) )?;
@@ -2714,7 +2726,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
             return Ok(());  // done!
         }
 
-        interp.after( 100, ( tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+        interp.after( 100, ( tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
             tcl_interp!().eval(( &quot;step&quot;, count+1 ))?;
             Ok(())
         }), ))?;
@@ -2722,7 +2734,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
         Ok(())
     });
 
-    f_b.configure( -command( tclosure!( tk, cmd:&quot;start&quot;, move || -&gt; TkResult&lt;()&gt; {
+    f_b.configure( -command( tclosure!( tk, cmd:&quot;start&quot;, || -&gt; TkResult&lt;()&gt; {
         f_b.configure( -text(&quot;Stop&quot;) -command(&quot;stop&quot;) )?;
         f_l.configure( -text(&quot;Working...&quot;) )?;
         let interp = tcl_interp!();
@@ -2750,33 +2762,23 @@ operation is completed. Your code can continue running, or in this case, return
 back to the event loop. Later on, when the I/O operation completes, your program
 is notified and can process the result of the I/O operation.</p>
 <p>If this sounds like treating I/O as another type of event, you're exactly right.
-In fact, it's also called event-driven I/O. </p>
+In fact, it's also called event-driven I/O.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="threads-or-processes"><a class="header" href="#threads-or-processes">Threads or Processes</a></h1>
-<p>Sometimes it's either not possible or practical to break up a long-running
+<p>Sometimes it's either impossible or impractical to break up a long-running
 computation into discrete pieces that each run quickly. Or you may be using a
 library that doesn't support asynchronous operations. Or, like Python's asyncio,
 it doesn't play nice with Tk's event loop. In cases like these, to keep your Tk
 GUI responsive, you'll need to move those time-consuming operations or library
 calls out of your event handlers and run them somewhere else. Threads, or even
 other processes, can help with that.</p>
-<p>Running tasks in threads, communicating with them, etc. is beyond the scope of
+<p>Running tasks in threads, communicating with them, etc., is beyond the scope of
 this tutorial. However, there are some restrictions on using Tk with threads
 that you should be aware of. The main rule is that you must only make Tk calls
-from the thread where you loaded Tk. Sometimes it's either not possible or
-practical to break up a long-running computation into discrete pieces that each
-run quickly. Or you may be using a library that doesn't support asynchronous
-operations. Or, like Python's asyncio, it doesn't play nice with Tk's event
-loop. In cases like these, to keep your Tk GUI responsive, you'll need to move
-those time-consuming operations or library calls out of your event handlers and
-run them somewhere else. Threads, or even other processes, can help with that.</p>
-<p>Running tasks in threads, communicating with them, etc. is beyond the scope of
-this tutorial. However, there are some restrictions on using Tk with threads
-that you should be aware of. The main rule is that you must only make Tk calls
-from the thread where you loaded Tk. </p>
+from the thread where you loaded Tk.</p>
 <p>It can be even more complicated. The Tcl/Tk libraries can be built either with
 or without thread support. If you have more than one thread in your application,
 make sure you're running in a threaded build. If you're unsure, check the Tcl
-variable <code>tcl_platform(threaded)</code>; it should be 1, not 0. </p>
+variable <code>tcl_platform(threaded)</code>; it should be 1, not 0.</p>
 <blockquote>
 <p>Most everyone should be running threaded builds. The ability to create
 non-threaded builds in Tcl/Tk is likely to go away in future. If you're using a
@@ -2813,7 +2815,7 @@ reality won't match with your mental model of a simple event loop dispatching
 events one at a time, independent of every other event. It's a classic example
 of fighting against Tk's model. In very specific circumstances, it's possible to
 make it work. In practice, you're asking for trouble. Don't say you haven't been
-warned... </p>
+warned...</p>
 </blockquote>
 <table><thead><tr><th style="text-align: center">Nested event loops... this way madness lies</th></tr></thead><tbody>
 <tr><td style="text-align: center"><img src="./images/nestedeventloop.png" alt="Nested event loops." /></td></tr>
@@ -3204,14 +3206,14 @@ let m = root.add_menu(())?;
 let m_edit = m.add_menu( &quot;edit&quot; )?;
 m.add_cascade( -menu(m_edit) -label(&quot;Edit&quot;) )?;
 m_edit.add_command( -label(&quot;Paste&quot;)
-    -command( tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    -command( tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( tk.focus()?.event_generate( event::virtual_event(&quot;Paste&quot;), () )? )})))?;
 m_edit.add_command( -label(&quot;Find...&quot;)
-    -command( tclosure!( tk, move || -&gt; TkResult&lt;()&gt; {
+    -command( tclosure!( tk, || -&gt; TkResult&lt;()&gt; {
         Ok( root.event_generate( event::virtual_event(&quot;OpenFindDialog&quot;), () )? )})))?;
 root.configure( -menu(m) )?;
 
-root.bind( event::virtual_event(&quot;OpenFindDialog&quot;), tclosure!( tk, move || -&gt; TkResult&lt;String&gt; {
+root.bind( event::virtual_event(&quot;OpenFindDialog&quot;), tclosure!( tk, || -&gt; TkResult&lt;String&gt; {
     Ok( tk.message_box( -message(&quot;I hope you find what you're looking for!&quot;) )? )
 }))?;
 <span class="boring">}
@@ -3357,7 +3359,7 @@ is chosen; if the procedure is not defined, the menu item will be disabled.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>tclosure!( tk, cmd: &quot;tk::mac::ShowPreferences&quot;, move || -&gt; TkResult&lt;()&gt; {
+</span>tclosure!( tk, cmd: &quot;tk::mac::ShowPreferences&quot;, || -&gt; TkResult&lt;()&gt; {
     // show preferences
     Ok(())
 });
@@ -3392,7 +3394,7 @@ application help item.</p>
 </span><span class="boring">fn main() {
 </span>let menu_help = menubar.add_menu( &quot;help&quot; )?;
 menubar.add_cascade( -menu(menu_help) -label(&quot;Help&quot;) )?;
-tclosure!( tk, cmd: &quot;::tk::mac::ShowHelp&quot;, move || -&gt; TkResult&lt;()&gt; {
+tclosure!( tk, cmd: &quot;::tk::mac::ShowHelp&quot;, || -&gt; TkResult&lt;()&gt; {
     // show help
     Ok(())
 });
@@ -3498,7 +3500,6 @@ via the <code>post</code> method. Here's an example of the whole process, using 
 menu on the application's main window.</p>
 <pre><pre class="playground"><code class="language-rust no_run">// `cargo run --example contextual_menus`
 
-use std::ffi::c_int;
 use tcl::*;
 use tk::*;
 use tk::cmd::*;
@@ -3512,9 +3513,9 @@ fn main() -&gt; TkResult&lt;()&gt; {
         menu.add_command( -label(i) )?;
     }
 
-    let handler = tclosure!( tk, cmd: &quot;handler&quot;, args: &quot;%X %Y&quot;,
-        move |x: c_int, y: c_int| -&gt; TkResult&lt;()&gt; {
-            Ok( tk.popup( menu, x, y, None )? )
+    let handler = tclosure!( tk,
+        |evt_rootx, evt_rooty| -&gt; TkResult&lt;()&gt; {
+            Ok( tk.popup( menu, evt_rootx, evt_rooty, None )? )
         }
     );
 
@@ -3761,11 +3762,11 @@ you can raise and lower them relative to each other:</p>
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let little = root.add_ttk_label( &quot;little&quot; -text(&quot;Little&quot;) )?
-    .grid( -column(0) -row(0) )?; 
+    .grid( -column(0) -row(0) )?;
 root.add_ttk_label( &quot;bigger&quot; -text(&quot;Much Bigger Label&quot;) )?
     .grid( -column(0) -row(0) )?;
 tk.after( 2000, (tclosure!( tk,
-    move || -&gt; TkResult&lt;()&gt; { Ok( little.raise()? )}),))?;
+    || -&gt; TkResult&lt;()&gt; { Ok( little.raise()? )}),))?;
 <span class="boring">}
 </span></code></pre></pre>
 <h2 id="screen-information"><a class="header" href="#screen-information">Screen Information</a></h2>
@@ -3913,9 +3914,9 @@ callback change the font on a label.</p>
 </span>let l = root
     .add_ttk_label( &quot;l&quot; -text(&quot;Hello World&quot;) -font(&quot;helvetica 24&quot;) )?
     .grid( -padx(10) -pady(10) )?;
-tclosure!( tk, cmd:&quot;font_changed&quot;,
-    move |some_font:Obj| -&gt; TkResult&lt;()&gt; { Ok( l.configure( -font(some_font) )? )});
-tk.fontchooser_configure( -font(&quot;helvetica 24&quot;) -command(&quot;font_changed&quot;) )?;
+let font_changed = tclosure!( tk,
+    |some_font:Obj| -&gt; TkResult&lt;()&gt; { Ok( l.configure( -font(some_font) )? )});
+tk.fontchooser_configure( -font(&quot;helvetica 24&quot;) -command(font_changed) )?;
 <span class="boring">}
 </span></code></pre></pre>
 <blockquote>
@@ -3959,11 +3960,11 @@ different fonts, when one of them gains focus, it should update the font
 chooser with its current font. This also means that a callback from the font
 dialog may apply to a different text widget than the one you initially called
 <code>show</code> from! Finally, be aware that the font chooser itself may gain the
-keyboard focus on some platforms. </p>
+keyboard focus on some platforms.</p>
 </blockquote>
 <blockquote>
 <p>As of Tk 8.6.10, there are a few bugs in the font chooser on various
-platforms. Here's a quick rundown including workarounds: </p>
+platforms. Here's a quick rundown including workarounds:</p>
 </blockquote>
 <blockquote>
 <ul>
@@ -4000,7 +4001,7 @@ later</li>
 <li>on Windows, a font change virtual event is not generated if you change the
 <code>font</code> configuration option in your code, though it is on macOS and X11 ⇒ take
 any necessary actions when you change the font in your code rather than in a
-virtual event handler </li>
+virtual event handler</li>
 </ul>
 </blockquote>
 <blockquote>
@@ -4042,7 +4043,7 @@ of a user's action to the caller. The exact return value will depend on the
 <code>yesno</code>:              ⇒ <code>yes</code> or <code>no</code>
 <code>yesnocancel</code>:        ⇒ <code>yes</code>, <code>no</code> or <code>cancel</code>
 <code>retrycancel</code>:        ⇒ <code>retry</code> or <code>cancel</code>
-<code>abortretryignore</code>:   ⇒ <code>abort</code>, <code>retry</code> or <code>ignore</code> </p>
+<code>abortretryignore</code>:   ⇒ <code>abort</code>, <code>retry</code> or <code>ignore</code></p>
 <p>The full list of possible options is shown here:</p>
 <p><code>type_</code>:    As described above.
 <code>message</code>:  The main message displayed inside the alert.
@@ -4130,7 +4131,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let root = tk.root();
 
     let p = root.add_ttk_panedwindow( -orient(&quot;vertical&quot;) )?.pack(())?;
-    
+
     // two panes, each of which would get widgets gridded into it:
     let f1 = p.add_ttk_labelframe( -text(&quot;Pane1&quot;) -width(100) -height(100) )?;
     let f2 = p.add_ttk_labelframe( -text(&quot;Pane2&quot;) -width(100) -height(100) )?;
@@ -4171,7 +4172,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let root = tk.root();
 
     let n = root.add_ttk_notebook(())?.pack(())?;
-    let f1 = n.add_ttk_frame(())?; // first page, which would get widgets gridded into it 
+    let f1 = n.add_ttk_frame(())?; // first page, which would get widgets gridded into it
     let f2 = n.add_ttk_frame(())?; // second page
     n.add( &amp;f1, -text(&quot;One&quot;) )?;
     n.add( &amp;f2, -text(&quot;Two&quot;) )?;
@@ -4184,7 +4185,7 @@ page is typically a frame and again must be a direct child (subwindow) of the
 notebook itself. A new page and its associated tab are added after the last tab
 with the <code>add( subwindow, options )</code> method. The <code>text</code> tab option sets the
 label on the tab; also useful is the <code>state</code> tab option, which can have the
-value <code>normal</code>, <code>disabled</code> (not selectable), or <code>hidden</code>. </p>
+value <code>normal</code>, <code>disabled</code> (not selectable), or <code>hidden</code>.</p>
 <p>To insert a tab at somewhere other than the end of the list, use the
 <code>insert( &amp;self, position, subwindow options )</code>, and to remove a given tab, use
 the <code>forget</code> method, passing it either the position (0..n-1) or the tab's
@@ -4249,7 +4250,7 @@ standard widgets use these named fonts. The predefined fonts are:</p>
 <p><code>TkCaptionFont</code>     : A font for window and dialog caption bars.</p>
 <p><code>TkSmallCaptionFont</code>: A smaller caption font for tool dialogs.</p>
 <p><code>TkIconFont</code>        : A font for icon captions.</p>
-<p><code>TkTooltipFont</code>     : A font for tooltips. </p>
+<p><code>TkTooltipFont</code>     : A font for tooltips.</p>
 <h2 id="platform-specific-fonts"><a class="header" href="#platform-specific-fonts">Platform-Specific Fonts</a></h2>
 <p>Tk provides additional named fonts to help you comply with less common
 situations on specific platforms. Individual platform guidelines detail how and
@@ -4319,7 +4320,7 @@ root.add_ttk_label( &quot;l&quot; -text(&quot;Attention!&quot;) -font(&quot;AppH
 <code>Courier</code>, <code>Times</code>, and <code>Helvetica</code> are available, though they may be mapped to
 an appropriate monospaced, serif, or sans-serif font). Other fonts installed on
 your system can be used, but the usual caveats about portability apply. You can
-get the names of all available families with: </p>
+get the names of all available families with:</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -4466,13 +4467,13 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], () )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], () )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -4610,7 +4611,7 @@ width, etc. There are several other things you can do with items.</p>
 <p>To change an item's size and position, you can use the <code>coords</code> method. You
 supply new coordinates for the item, specified the same way as when you first
 created it. Calling this method without a new set of coordinates will return the
-current coordinates of the item. You can use the <code>move</code> method to offset one or
+current coordinates of the item. You can use the <code>move_</code> method to offset one or
 more items horizontally or vertically from their current position.</p>
 <p>All items are ordered from top to bottom in what's called the stacking order. If
 an item later in the stacking order overlaps an item below it, the first item
@@ -4641,7 +4642,7 @@ The only difference is you specify the canvas item this binding applies to.</p>
 </span>canvas.bind(
     id.into(),
     event::button_press_1(),
-    tclosure!( tk, move || l.configure( -text(&quot;...&quot;) )))?;
+    tclosure!( tk, || l.configure( -text(&quot;...&quot;) )))?;
 <span class="boring">}
 </span></code></pre></pre>
 <p>Let's add some code to our sketchpad example to allow changing the drawing
@@ -4665,14 +4666,14 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], -fill(color) )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], -fill(color) )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -4680,17 +4681,17 @@ fn main() -&gt; TkResult&lt;()&gt; {
     let id = canvas.create_rectangle( 10.0, 10.0, 30.0, 30.0, -fill(&quot;red&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0, -fill(&quot;blue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0, -fill(&quot;black&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     tk.set( &quot;color&quot;, &quot;black&quot; );
     Ok( main_loop() )
@@ -4754,7 +4755,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
     assert_eq!(
         items.get_elements()?.map( |item| item.get_string() ).collect::&lt;Vec&lt;_&gt;&gt;(),
         vec![ &quot;1&quot;.to_owned(), &quot;2&quot;.to_owned() ]);
- 
+
     Ok( main_loop() )
 }
 </code></pre></pre>
@@ -4790,15 +4791,15 @@ fn main() -&gt; TkResult&lt;()&gt; {
     root.grid_columnconfigure( 0, -weight(1) )?;
     root.grid_rowconfigure( 0, -weight(1) )?;
     Widget::bind( &amp;canvas, event::button_press_1(), &quot;set lastx %x; set lasty %y&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
             set_color( &amp;tk, &amp;canvas, &amp;color )?;
-            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ], -fill(color) )?;
-            tk.set( &quot;lastx&quot;, x );
-            tk.set( &quot;lasty&quot;, y );
+            canvas.create_line( &amp;[ (last_x,last_y), (evt_x,evt_y) ], -fill(color) )?;
+            tk.set( &quot;lastx&quot;, evt_x );
+            tk.set( &quot;lasty&quot;, evt_y );
             Ok(())
         }
     ))?;
@@ -4807,19 +4808,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
         -fill(&quot;red&quot;) -tags(&quot;palette palettered&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0,
         -fill(&quot;blue&quot;) -tags(&quot;palette paletteblue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0,
         -fill(&quot;black&quot;) -tags(&quot;palette paletteblack paletteSelected&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     set_color( &amp;tk, &amp;canvas, &amp;Obj::from(&quot;black&quot;) )?;
     canvas.itemconfigure( item_tag( &quot;palette&quot; ), -width(5) )?;
@@ -4838,8 +4839,8 @@ prominent. When the mouse button is released, we'll return the line to normal.</
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-    move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
+</span>Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+    |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
         // ...
         canvas.create_line( &amp;[ (last_x,last_y), (x,y) ],
             -fill(color) -width(5) -tags(&quot;currentline&quot;) )?;
@@ -4854,7 +4855,7 @@ prominent. When the mouse button is released, we'll return the line to normal.</
 Widget::bind(
     &amp;canvas,
     event::button_1().button_pelease(),
-    tclosure!( tk, move || -&gt;TkResult&lt;()&gt; {
+    tclosure!( tk, || -&gt;TkResult&lt;()&gt; {
         Ok( canvas.itemconfigure( item_tag( &quot;currentline&quot; ), -width(1) )? )
     })
 )?;
@@ -4925,11 +4926,11 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     Widget::bind( &amp;canvas, event::button_press_1(),
         &quot;set lastx [.canvas canvasx %x]; set lasty [.canvas canvasy %y]&quot; )?;
-    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk, args: &quot;%x %y&quot;,
-        move |x: c_double, y: c_double| -&gt; TkResult&lt;()&gt; {
-            let x = canvas.canvasx( x, None )?;
-            let y = canvas.canvasy( y, None )?;
-        
+    Widget::bind( &amp;canvas, event::button_1().motion(), tclosure!( tk,
+        |evt_x:c_double, evt_y:c_double| -&gt; TkResult&lt;()&gt; {
+            let x = canvas.canvasx( evt_x, None )?;
+            let y = canvas.canvasy( evt_y, None )?;
+
             let last_x = tk.get_double(&quot;lastx&quot;)?;
             let last_y = tk.get_double(&quot;lasty&quot;)?;
             let color = tk.get(&quot;color&quot;)?;
@@ -4943,7 +4944,7 @@ fn main() -&gt; TkResult&lt;()&gt; {
                     item_tag( &amp;format!( &quot;palette{}&quot;, color.clone().get_string() )).into() ))?;
             canvas.itemconfigure( item_tag( &quot;paletteSelected&quot; ), -outline(&quot;#999999&quot;) )?;
 
-            canvas.create_line( vec![ (last_x,last_y), (x,y) ],
+            canvas.create_line( &amp;[ (last_x,last_y), (x,y) ],
                 -fill(color) -width(5) -tags(&quot;currentline&quot;) )?;
 
             tk.set( &quot;lastx&quot;, x );
@@ -4954,8 +4955,8 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     Widget::bind(
         &amp;canvas,
-        event::button_1().button_pelease(),
-        tclosure!( tk, move || -&gt;TkResult&lt;()&gt; {
+        event::button_1().button_release(),
+        tclosure!( tk, || -&gt;TkResult&lt;()&gt; {
             Ok( canvas.itemconfigure( item_tag( &quot;currentline&quot; ), -width(1) )? )
         })
     )?;
@@ -4964,19 +4965,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
         -fill(&quot;red&quot;) -tags(&quot;palette palettered&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;red&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 35.0, 30.0, 55.0,
         -fill(&quot;blue&quot;) -tags(&quot;palette paletteblue&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;blue&quot; ); Ok(()) }))?;
 
     let id = canvas.create_rectangle( 10.0, 60.0, 30.0, 80.0,
         -fill(&quot;black&quot;) -tags(&quot;palette paletteblack paletteSelected&quot;) )?;
     canvas.bind( id,
         event::button_press_1(),
-        tclosure!( tk, move || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
+        tclosure!( tk, || { tk.set( &quot;color&quot;, &quot;black&quot; ); Ok(()) }))?;
 
     tk.set( &quot;color&quot;, &quot;black&quot; );
     canvas.itemconfigure( item_tag( &quot;palette&quot; ), -width(5) )?;
@@ -5334,7 +5335,7 @@ there are substantial differences to take note of.</p>
 control their appearance. When we refer to a tag in a canvas, the meaning of
 that is identical to &quot;all canvas items presently having that tag.&quot; The tag
 itself doesn't exist as a separate object. So in the following snippet, the last
-rectangle added will not be colored red. </p>
+rectangle added will not be colored red.</p>
 <pre><pre class="playground"><code class="language-rust no_run">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -5514,19 +5515,19 @@ fn main() -&gt; TkResult&lt;()&gt; {
 
     // Inserted at the root, program chooses id:
     tree.insert( &quot;&quot;, Index::End, &quot;widgets&quot; -text(&quot;Widget Tour&quot;) )?;
-     
+
     // Same thing, but inserted as first child:
     tree.insert( &quot;&quot;, 0, &quot;gallery&quot; -text(&quot;Applications&quot;) )?;
-    
+
     // Treeview chooses the id:
     let id = tree
         .insert( &quot;&quot;, Index::End, -text(&quot;Tutorial&quot;) )?
         .unwrap();
-    
+
     // Inserted underneath an existing node:
     tree.insert( &quot;widgets&quot;, Index::End, -text(&quot;Canvas&quot;) )?;
     tree.insert( &amp;id, Index::End, -text(&quot;Tree&quot;) )?;
- 
+
     Ok( main_loop() )
 }
 </code></pre></pre>
@@ -5652,7 +5653,7 @@ column widths.</li>
 (default is &quot;tree headings&quot; to show both).</li>
 <li>You can specify whether a single item or multiple items can be selected by
 users via the <code>selectmode</code> widget configuration option, passing <code>browse</code>
-(single item), <code>extended</code> (multiple items, the default), or <code>none</code>. </li>
+(single item), <code>extended</code> (multiple items, the default), or <code>none</code>.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="styles-and-themes"><a class="header" href="#styles-and-themes">Styles and Themes</a></h1>
 <p>The themed aspect of the modern Tk widgets is one of the most powerful and
@@ -5750,7 +5751,7 @@ application developer using the widget.</p>
 <p>Using styles, widget authors don't need to provide code for every possible
 appearance option. That not only simplifies the widget but paradoxically ensures
 that a wider range of appearances can be set, including those the widget author
-may not have anticipated. </p>
+may not have anticipated.</p>
 </blockquote>
 <h2 id="run-example-24"><a class="header" href="#run-example-24">Run Example</a></h2>
 <p>Example code in this chapter can be executed via:</p>
@@ -5992,7 +5993,7 @@ class <code>Frame</code>. You could use the option database to change the appear
 just the <code>SpecialFrame</code> frames.</p>
 </blockquote>
 <blockquote>
-<p>Styles and themes take that simple idea and give it rocket boosters. </p>
+<p>Styles and themes take that simple idea and give it rocket boosters.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="whats-inside-a-style"><a class="header" href="#whats-inside-a-style">What's Inside a Style?</a></h1>
 <p>If all you want to do is use a style or create a new one with a few tweaks, you
@@ -6008,7 +6009,7 @@ That's one element. Just inside that, there may be a focus ring. Normally, it's
 just the background color, but could be highlighted when a user tabs into the
 button. So that's a second element. Then there might be some spacing between
 that focus ring and the button's label. That spacing is a third element.
-Finally, the text label of the button itself is a forth element. </p>
+Finally, the text label of the button itself is a forth element.</p>
 <table><thead><tr><th style="text-align: center"><img src="./images/button_elements.png" alt="Possible elements of a button." /></th></tr></thead><tbody>
 <tr><td style="text-align: center">Possible elements of a button.</td></tr>
 </tbody></table>
@@ -6154,7 +6155,7 @@ noted)</p>
 </li>
 <li>
 <p>when the widget is in the state where the button is pressed, and the widget is
-not disabled, the relief should be set to <code>sunken</code> </p>
+not disabled, the relief should be set to <code>sunken</code></p>
 </li>
 </ul>
 <pre><pre class="playground"><code class="language-rust no_run">
@@ -6279,7 +6280,7 @@ typically documented (outside of reading the theme definition files themselves)
 but are generally identified via theme introspection (which we'll see soon).
 Because all themes aren't available on all platforms (e.g., <code>aqua</code> is only
 available on macOS), you'll need ready access to every platform and theme you
-need to run on. </p>
+need to run on.</p>
 </li>
 </ol>
 <p>Consider trying to customize a button. You know it uses the <code>TButton</code> style. But
